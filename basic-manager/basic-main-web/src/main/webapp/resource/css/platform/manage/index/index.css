@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+.required{
+    color: red;
+    font-weight:bold;
+}
+
+.loginUserInfoUserName{
+    cursor: pointer;
+    padding-right: 5px;
+}
+
+#head-region-container{
+//background-color: #eeeeee;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+#foot-region-container{
+border-top-width:1px;
+border-top-style:solid;
+border-top-color:#aaaaaa;
+height: 25px;
+text-align: center;
+}

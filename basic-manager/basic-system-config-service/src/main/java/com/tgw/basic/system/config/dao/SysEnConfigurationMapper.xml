@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.config.dao.SysEnConfigurationMapper">
+
+	<select id="searchData" parameterType="com.tgw.basic.system.config.model.SysEnConfiguration" resultType="map">
+		<bind name="confNameCon" value="'%' + _parameter.getConfName() + '%'" />
+		<bind name="confKeyCon" value="'%' + _parameter.getConfKey() + '%'" />
+		<bind name="confValueCon" value="'%' + _parameter.getConfValue() + '%'" />
+
+		SELECT conf.id,
+			p_conf.conf_name fkParentId,
+			conf.conf_name confName,conf.conf_key confKey,conf.conf_value confValue,
+			conf.remark ,
+			date_format(conf.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+			date_format(conf.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+		from sys_en_configuration conf
+		LEFT JOIN sys_en_configuration p_conf on p_conf.id = conf.fk_parent_id
+		<where>
+			<if test="confName!=null and confName!=''">
+				conf.conf_name like #{confNameCon}
+			</if>
+			<if test="confKey!=null and confKey!=''">
+			  	and conf.conf_key like #{confKeyCon}
+			</if>
+			<if test="confValue!=null and confValue!=''">
+				and conf.conf_value like #{confValueCon}
+			</if>
+			<if test="fkParentId!=null">
+				and conf.fk_parent_id = #{fkParentId}
+			</if>
+		</where>
+		order by CONCAT_WS('',p_conf.conf_key,conf.conf_key) asc
+	</select>
+
+	<select id="queryConfTreeMap"  resultType="map">
+		SELECT conf.id,conf.conf_name ,conf.fk_parent_id
+ 		from sys_en_configuration conf
+ 		order by convert(conf.conf_name using gbk)  asc
+	</select>
+</mapper>

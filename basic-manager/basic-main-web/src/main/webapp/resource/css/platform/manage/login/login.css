@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+#bgcc {
+    position: absolute;
+    width: 1019px;
+    height: 577px;
+    left: 40%;
+    top: 35%;
+    margin-left: -325px;
+    margin-top: -149px;
+}
+
+#content {
+    position: absolute;
+    left: 221px;
+    top: 111px;
+    width: 582px;
+    height: 296px;
+    background-image: url('../../../../../resource/img/platform/manage/login/bg1.png');
+}
+
+.inputcss-tip {
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    background: transparent;
+    border: 0px solid #ffffff;
+    color: red;
+    font-size: 12px;
+    left: 335px;
+    top: 110px;
+    top: 115px\9;
+}
+
+.inputcss-userName {
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    background: transparent;
+    border: 0px solid #ffffff;
+    font-size: 15px;
+    left: 335px;
+    top: 131px;
+    top: 136px\9;
+}
+
+.inputcss-password {
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    background: transparent;
+    border: 0px solid #ffffff;
+    font-size: 15px;
+    left: 335px;
+    top: 169px;
+    top: 172px\9;
+}
+
+.save {
+    position: absolute;
+    left: 335px;
+    top: 213px;
+}
+
+.reset {
+    position: absolute;
+    left: 410px;
+    top: 213px;
+}

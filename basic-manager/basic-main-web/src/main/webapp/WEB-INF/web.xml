@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <!-- 编码过滤器 -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <async-supported>true</async-supported>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.tgw.basic.system.user.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:config/log4j.properties</param-value>
+  </context-param>
+  <listener>
+    <listener-class>
+      org.springframework.web.util.Log4jConfigListener
+    </listener-class>
+  </listener>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:config/spring-mybatis.xml</param-value>
+  </context-param>
+
+  <!-- Spring监听器 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 防止Spring内存溢出监听器 -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+
+  <!-- Spring MVC servlet -->
+  <servlet>
+    <servlet-name>mvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:config/spring-mvc.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mvc</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+  <!--
+  <servlet>
+    <servlet-name>SimpleUploader</servlet-name>
+    <servlet-class>com.tgw.servlet.CKEditorUploadServlet</servlet-class>
+    <init-param>
+      <param-name>baseDir</param-name>
+      <param-value>/UserFiles/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <init-param>
+      <param-name>enabled</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>AllowedExtensionsFile</param-name>
+      <param-value></param-value>
+    </init-param>
+    <init-param>
+      <param-name>DeniedExtensionsFile</param-name>
+      <param-value>
+        html|htm|php|php2|php3|php4|php5|phtml|pwml|inc|asp|aspx|ascx|jsp|cfm|cfc|pl|bat|exe|com|dll|vbs|js|reg|cgi|htaccess|asis|ftl
+      </param-value>
+    </init-param>
+    <init-param>
+      <param-name>AllowedExtensionsImage</param-name>
+      <param-value>jpg|gif|jpeg|png|bmp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>DeniedExtensionsImage</param-name>
+      <param-value></param-value>
+    </init-param>
+    <init-param>
+      <param-name>AllowedExtensionsFlash</param-name>
+      <param-value>3gp|avi|flv|wmv|swf|fla|mp4</param-value>
+    </init-param>
+    <init-param>
+      <param-name>DeniedExtensionsFlash</param-name>
+      <param-value></param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SimpleUploader</servlet-name>
+    <url-pattern>/ckeditor/uploader</url-pattern>
+  </servlet-mapping>
+-->
+  <display-name></display-name>
+  <welcome-file-list>
+    <welcome-file>login/toManageIndex.do</welcome-file>
+  </welcome-file-list>
+
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+</web-app>

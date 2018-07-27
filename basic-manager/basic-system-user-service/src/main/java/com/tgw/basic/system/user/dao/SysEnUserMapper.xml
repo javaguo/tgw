@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.user.dao.SysEnUserMapper">
+
+	<resultMap id="defaultResultMapSysEnUser" type="com.tgw.basic.system.user.model.SysEnUser">
+    	<id column="id" property="id"/>
+		<result column="user_name" property="userName"/>
+		<result column="login_name" property="loginName"/>
+		<result column="password" property="password"/>
+		<result column="user_status" property="userStatus"/>
+		<result column="theme" property="theme"/>
+		<result column="remark" property="remark"/>
+		<result column="add_time" property="addTime"/>
+		<result column="update_time" property="updateTime"/>
+  	</resultMap>
+
+
+	<select id="searchData" parameterType="com.tgw.basic.system.user.model.SysEnUser" resultType="map">
+		<bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+		<bind name="loginNameCon" value="'%' + _parameter.getLoginName() + '%'" />
+
+		SELECT en_user.id,en_user.user_name userName,
+				en_user.login_name loginName,
+				'' reUserRoleId,
+				en_user.user_status userStatus,
+				en_user.remark,
+				date_format(en_user.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+				date_format(en_user.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+		from sys_en_user en_user
+		<where>
+			<if test="userName!=null and userName!=''">
+				and en_user.user_name like #{userNameCon}
+			</if>
+			<if test="loginName!=null and loginName!=''">
+				and en_user.login_name like #{loginNameCon}
+			</if>
+			<if test="reUserRoleIdList!=null">
+				and exists (select 1 from sys_re_user_role re_ur
+				where en_user.id = re_ur.fk_user_id
+				  and re_ur.fk_role_id in
+				<foreach item="item" index="index" collection="reUserRoleIdList" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				)
+			</if>
+			<if test="userStatus!=null and userStatus!=''">
+				and en_user.user_status = #{userStatus}
+			</if>
+		</where>
+		order by en_user.login_name asc
+	</select>
+
+	<select id="queryRoleTreeMap"  resultType="map">
+		select role.id,role.role_name,role.fk_parent_id
+		from sys_en_role role
+		order by role.order_num
+	</select>
+
+	<select id="queryUserByLoginName"  resultMap="defaultResultMapSysEnUser">
+		select en_user.id,en_user.user_name,
+				en_user.login_name,en_user.password,
+				en_user.remark,en_user.user_status,en_user.theme,
+				en_user.add_time,en_user.update_time
+		from sys_en_user en_user
+		<where>
+			en_user.login_name = #{loginName}
+		</where>
+	</select>
+
+	<select id="loadMenuByUser"  resultMap="com.tgw.basic.system.menu.dao.SysEnMenuMapper.defaultResultMenuMap">
+		select menu.id,menu.menu_identify,menu.text,menu.link,menu.qtip,menu.is_leaf,
+		menu.is_expanded,menu.fk_parent_id,menu.is_self_url
+		from sys_en_user u,sys_en_role role,sys_en_menu menu,sys_re_user_role ur,sys_re_role_menu rm
+		where u.id = ur.fk_user_id
+		and ur.fk_role_id = role.id
+		and role.id = rm.fk_role_id
+		and rm.fk_menu_id = menu.id
+		and u.id = 	#{userId}
+		and u.user_status = '1'
+		and role.role_status = '1'
+		order by menu.fk_parent_id asc,menu.order_num asc
+	</select>
+</mapper>

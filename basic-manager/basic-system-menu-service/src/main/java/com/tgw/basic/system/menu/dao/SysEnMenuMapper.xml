@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.menu.dao.SysEnMenuMapper">
+
+	<resultMap id="defaultResultMenuMap" type="com.tgw.basic.system.menu.model.SysEnMenu">
+    	<id column="id" property="id"/>
+		<result column="menu_identify" property="menuIdentify"/>
+    	<result column="text" property="text"/>
+   	 	<result column="link" property="link"/>
+    	<result column="qtip" property="qtip"/>
+    	<result column="is_leaf" property="leaf"/>
+    	<result column="is_expanded" property="expanded"/>
+    	<result column="fk_parent_id" property="fkParentId"/>
+    	<result column="is_self_url" property="selfUrl"/>
+  	</resultMap>
+
+	<select id="searchData" parameterType="com.tgw.basic.system.menu.model.SysEnMenu" resultType="map">
+		<bind name="menuIdentifyCon" value="'%' + _parameter.getMenuIdentify() + '%'" />
+		<bind name="textCon" value="'%' + _parameter.getText() + '%'" />
+		<bind name="linkCon" value="'%' + _parameter.getLink() + '%'" />
+
+		select menu.id,menu.menu_identify menuIdentify,
+			p_menu.text fkParentId,
+			menu.text,menu.link,
+			menu.qtip,
+			case menu.is_leaf when 1 then '是' when 0 then '否' else '' end leaf,
+			case menu.is_expanded when 1 then '是' when 0 then '否' else '' end expanded,
+			case menu.is_self_url when 1 then '是' when 0 then '否' else '' end selfUrl,
+
+			menu.order_num orderNum,
+			date_format(menu.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+			date_format(menu.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+		from sys_en_menu menu
+		left JOIN sys_en_menu p_menu on p_menu.id = menu.fk_parent_id
+		LEFT JOIN sys_en_menu p_p_menu on p_p_menu.id = p_menu.fk_parent_id
+		LEFT JOIN sys_en_menu p_p_p_menu on p_p_p_menu.id = p_p_menu.fk_parent_id
+		<where>
+			<if test="menuIdentify!=null and menuIdentify!=''">
+				and menu.menu_identify like #{menuIdentifyCon}
+			</if>
+			<if test="fkParentId!=null">
+				and menu.fk_parent_id = #{fkParentId}
+			</if>
+			<if test="text!=null and text!='' ">
+				and menu.text like #{textCon}
+			</if>
+			<if test="link!=null and link!='' ">
+				and menu.link like #{linkCon}
+			</if>
+		</where>
+		order by CONCAT_WS('',LPAD(p_p_p_menu.order_num,8,'0'),LPAD(p_p_menu.order_num,8,'0')
+					,LPAD(p_menu.order_num,8,'0'),LPAD(menu.order_num,8,'0') )  asc
+	</select>
+
+	<select id="queryMenuTreeMap"  resultType="map">
+		SELECT menu.id,menu.text,menu.fk_parent_id
+		 from sys_en_menu menu
+		order by menu.order_num asc
+	</select>
+
+	<select id="loadMenuByRole"  resultMap="defaultResultMenuMap">
+		select menu.id,menu.menu_identify,menu.text,menu.link,menu.qtip,menu.is_leaf,
+			   menu.is_expanded,menu.fk_parent_id,menu.is_self_url
+ 		from sys_re_role_menu rm,sys_en_role role,sys_en_menu menu
+		where rm.fk_role_id = role.id
+    	  and rm.fk_menu_id = menu.id
+		  and role.id=#{roleId}
+		order by menu.order_num asc
+	</select>
+
+
+</mapper>

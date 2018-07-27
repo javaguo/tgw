@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.constant.dao.SysEnConstantMapper">
+
+	<select id="searchData" parameterType="com.tgw.basic.system.constant.model.SysEnConstant" resultType="map">
+		<bind name="nameCon" value="'%' + _parameter.getName() + '%'" />
+		<bind name="codeCon" value="'%' + _parameter.getCode() + '%'" />
+		<bind name="namespaceCon" value="'%' + _parameter.getNamespace() + '%'" />
+
+		select sec.id,sec.name,sec.code,sec.namespace,
+			case when sec.is_valid=1 then '是' when sec.is_valid=0 then '否' else '未知' end valid,sec.remark,
+			date_format(sec.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+			date_format(sec.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+		  from sys_en_constant sec
+		<where>
+			<if test="name!=null and name!=''">
+				sec.name like #{nameCon}
+			</if>
+			<if test="code!=null and code!=''">
+			  	and sec.code like #{codeCon}
+			</if>
+			<if test="namespace!=null and namespace!=''">
+				and sec.namespace like #{namespaceCon}
+			</if>
+		</where>
+		order by sec.namespace,sec.code
+	</select>
+
+</mapper>

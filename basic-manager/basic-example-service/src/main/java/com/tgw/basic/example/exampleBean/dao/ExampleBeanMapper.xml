@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.example.exampleBean.dao.ExampleBeanMapper">
+
+	<select id="searchData" parameterType="com.tgw.basic.example.exampleBean.model.ExampleBean"  resultType="map">
+		<bind name="formTextCon" value="'%' + _parameter.getFormText() + '%'" />
+
+		select exam.id,
+			exam.form_hidden formHidden,
+			exam.form_text formText,
+			exam.form_text_area formTextArea,
+
+			exam.form_number_short formNumberShort,
+			exam.form_number_integer formNumberInteger,
+			exam.form_number_long formNumberLong,
+			exam.form_number_float formNumberFloat,
+			exam.form_number_double formNumberDouble,
+			exam.form_boolean formBoolean,
+			exam.is_form_boolean_flag formBooleanFlag,
+
+      		exam.form_tag_json formTagJson,
+			exam.form_tag_sql formTagSql,
+
+			exam.form_date_string formDateString,
+			date_format(exam.form_date_date, '%Y-%m-%d') formDateDate,
+			date_format(exam.form_datetime_ymdhm, '%Y-%m-%d %H:%i') formDatetimeYmdhm,
+			exam.form_datetime_string formDatetimeString,
+			date_format(exam.form_datetime_date, '%Y-%m-%d %H:%i:%s') formDatetimeDate,
+
+			exam.form_radio formRadio,
+			exam.form_checkbox formCheckbox,
+
+			exam.form_combo_box_json formComboBoxJson,
+			disComboBoxSql.name formComboBoxSql,
+			disComboBoxCascadeA.name formComboBoxCascadeA,
+			disComboBoxCascadeB.name formComboBoxCascadeB,
+			disComboBoxCascade1.name formComboBoxCascade1,
+			disComboBoxCascade2.name formComboBoxCascade2,
+			disComboBoxCascade3.name formComboBoxCascade3,
+
+		    exam.form_combo_box_tree1 formComboBoxTree1,
+			exam.form_combo_box_tree2 formComboBoxTree2,
+			exam.form_combo_box_tree3 formComboBoxTree3,
+			exam.form_combo_box_tree4 formComboBoxTree4,
+			exam.form_combo_box_tree5 formComboBoxTree5,
+			exam.form_combo_box_tree6 formComboBoxTree6,
+
+			exam.form_html_editor formHtmlEditor,
+
+			exam.form_file1_orig_file_name formFile1OrigFileName,
+			exam.form_file1_url formFile1Url,
+			exam.form_file2_orig_file_name formFile2OrigFileName,
+			exam.form_file2_url formFile2Url,
+			exam.form_file3_orig_file_name formFile3OrigFileName,
+			exam.form_file3_url formFile3Url,
+
+			exam.form_display formDisplay,
+
+			date_format(exam.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+			date_format(exam.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+ from example_bean exam
+   LEFT JOIN example_bean_tree disComboBoxSql on exam.form_combo_box_sql = disComboBoxSql.id
+   LEFT JOIN example_bean_tree disComboBoxCascadeA on exam.form_combo_box_cascade_a = disComboBoxCascadeA.id
+	 LEFT JOIN example_bean_tree disComboBoxCascadeB on exam.form_combo_box_cascade_b = disComboBoxCascadeB.id
+	 LEFT JOIN example_bean_tree disComboBoxCascade1 on exam.form_combo_box_cascade1 = disComboBoxCascade1.id
+	 LEFT JOIN example_bean_tree disComboBoxCascade2 on exam.form_combo_box_cascade2 = disComboBoxCascade2.id
+	 LEFT JOIN example_bean_tree disComboBoxCascade3 on exam.form_combo_box_cascade3 = disComboBoxCascade3.id
+		<where>
+			<if test="formText!=null and formText!=''">
+			   and exam.form_text like #{formTextCon}
+			</if>
+
+			<if test="formNumberShortStart!=null">
+				and exam.form_number_short &gt;= #{formNumberShortStart}
+			</if>
+			<if test="formNumberShortEnd!=null">
+				and exam.form_number_short &lt;= #{formNumberShortEnd}
+			</if>
+			<if test="formNumberInteger!=null">
+				and exam.form_number_integer = #{formNumberInteger}
+			</if>
+			<if test="formNumberDouble!=null">
+				and exam.form_number_double = #{formNumberDouble}
+			</if>
+
+			<if test="formBooleanFlag!=null and formBooleanFlag==true">
+				and exam.is_form_boolean_flag = 1
+			</if>
+			<if test="formBooleanFlag!=null and formBooleanFlag==false">
+				and exam.is_form_boolean_flag = 0
+			</if>
+
+			<if test="formTagSql!=null and formTagSql!='' ">
+				and exam.form_tag_sql = #{formTagSql}
+			</if>
+
+			<if test="formDateStringStart!=null and formDateStringStart!='' ">
+				and exam.form_date_string &gt;= #{formDateStringStart}
+			</if>
+			<if test="formDateStringEnd!=null and formDateStringEnd!='' ">
+				and exam.form_date_string &lt;= #{formDateStringEnd}
+			</if>
+			<if test="formDateDate!=null">
+				and exam.form_date_date = #{formDateDate}
+			</if>
+			<if test="formDatetimeString!=null and formDatetimeString!='' ">
+				and exam.form_datetime_string = #{formDatetimeString}
+			</if>
+			<if test="formDatetimeDateStart!=null">
+				and exam.form_datetime_date &gt;= #{formDatetimeDateStart}
+			</if>
+			<if test="formDatetimeDateEnd!=null">
+				and exam.form_datetime_date &lt;= #{formDatetimeDateEnd}
+			</if>
+
+			<if test="formRadio!=null and formRadio!='' ">
+				and exam.form_radio = #{formRadio}
+			</if>
+			<if test="formCheckbox!=null and formCheckbox!='' ">
+				and exam.form_checkbox = #{formCheckbox}
+			</if>
+
+			<if test="formComboBoxJson!=null and formComboBoxJson!='' ">
+				and exam.form_combo_box_json = #{formComboBoxJson}
+			</if>
+			<if test="formComboBoxSql!=null and formComboBoxSql!='' ">
+				and exam.form_combo_box_sql = #{formComboBoxSql}
+			</if>
+			<if test="formComboBoxCascadeA!=null and formComboBoxCascadeA!='' ">
+				and exam.form_combo_box_cascade_a = #{formComboBoxCascadeA}
+			</if>
+			<if test="formComboBoxCascadeB!=null and formComboBoxCascadeB!='' ">
+				and exam.form_combo_box_cascade_b = #{formComboBoxCascadeB}
+			</if>
+			<if test="formComboBoxCascade1!=null and formComboBoxCascade1!='' ">
+				and exam.form_combo_box_cascade1 = #{formComboBoxCascade1}
+			</if>
+			<if test="formComboBoxCascade2!=null and formComboBoxCascade2!='' ">
+				and exam.form_combo_box_cascade2 = #{formComboBoxCascade2}
+			</if>
+			<if test="formComboBoxCascade3!=null and formComboBoxCascade3!='' ">
+				and exam.form_combo_box_cascade3 = #{formComboBoxCascade3}
+			</if>
+
+			<if test="formComboBoxTree6!=null and formComboBoxTree6!='' ">
+				and exam.form_combo_box_tree6 = #{formComboBoxTree6}
+			</if>
+		</where>
+order by exam.update_time desc
+		/*CONVERT( CONCAT_WS('',receipt_p.receipts_type_name,receipt.receipts_type_name) USING gbk)*/
+	</select>
+
+	<select id="loadComboboxData"  resultType="map">
+		select menu.id,menu.text name
+		from sys_en_menu menu
+		<where>
+			<if test="value!=null">
+				menu.fk_parent_id = #{value}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryMenuComboBoxMap"  resultType="map">
+		select menu.id,menu.text name
+		from sys_en_menu menu
+		<where>
+			<if test="value!=null">
+				menu.fk_parent_id = #{value}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryDistrictComboBoxMap"  resultType="map">
+		select tree.id,tree.name
+		from example_bean_tree tree
+		<where>
+			<if test="value!=null">
+				tree.parent_id = #{value}
+			</if>
+			<if test="value==null">
+				tree.parent_id  is null
+			</if>
+		</where>
+	</select>
+
+	<select id="queryMenuTreeMap"  resultType="map">
+		select menu.id,menu.text,menu.fk_parent_id,
+			    menu.is_expanded expanded,menu.is_self_url
+ 		from sys_re_role_menu rm,sys_en_role role,sys_en_menu menu
+		where rm.fk_role_id = role.id
+    	  and rm.fk_menu_id = menu.id
+	</select>
+
+	<select id="queryDistrictTreeMap"  resultType="map">
+		select tree.id,tree.name,tree.parent_id
+		from example_bean_tree tree
+	</select>
+
+	<select id="queryAllDistrict"  resultType="map">
+		select tree.id,tree.name,tree.parent_id
+ 		  from example_bean_tree tree
+		order by tree.id
+	</select>
+</mapper>

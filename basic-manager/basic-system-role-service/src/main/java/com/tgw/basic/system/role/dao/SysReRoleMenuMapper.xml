@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.role.dao.SysReRoleMenuMapper">
+
+    <delete id="deleteRoleMenuByRoleId">
+        DELETE from sys_re_role_menu where fk_role_id = #{roleId}
+    </delete>
+
+    <select id="loadRoleMenuByRoleId" resultType="map">
+        select menu.id,menu.fk_menu_id
+        from sys_re_role_menu menu where menu.fk_role_id = #{roleId}
+    </select>
+</mapper>

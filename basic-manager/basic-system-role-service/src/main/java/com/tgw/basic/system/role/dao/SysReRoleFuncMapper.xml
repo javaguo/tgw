@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.role.dao.SysReRoleFuncMapper">
+    <delete id="deleteRoleFuncByRoleId">
+        delete from sys_re_role_func where fk_role_id= #{roleId}
+    </delete>
+
+    <select id="loadRoleFuncByRoleId" resultType="map">
+        select func.id,func.fk_func_id
+        from sys_re_role_func func where func.fk_role_id = #{roleId}
+    </select>
+</mapper>
