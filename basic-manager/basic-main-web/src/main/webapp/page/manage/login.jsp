@@ -51,5 +51,10 @@
 				</form>
 			</div>
 		</div>
+
+		<div style="width: 420px;height:80px;float:right;">
+			<iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23&icon=1&num=5&site=14"></iframe>
+			<%--<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=2" width="770" height="70" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>--%>
+		</div>
 	</body>
 </html>
