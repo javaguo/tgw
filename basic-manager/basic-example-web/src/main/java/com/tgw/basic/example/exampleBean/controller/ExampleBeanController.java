@@ -12,6 +12,7 @@ import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,7 +31,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/exampleBean")
 public class ExampleBeanController extends BaseController<ExampleBean> {
-
+    private final static Logger logger = Logger.getLogger(ExampleBeanController.class);
     @Resource
     private ExampleBeanService exampleBeanService;
 
@@ -433,7 +434,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         controller.addJsFileNameUserDefinePath( "page/manage/example/exampleBean/js/menuUserDefineOpe.js" );
         controller.addFunctionUserDefineOperate("menu5","自定义操作","menuUserDefineOpe","Application",5);
 
-        StringBuffer strIns = new StringBuffer();
+        StringBuilder strIns = new StringBuilder();
         strIns.append("    此列表页面是一个表单控件示例。");
         strIns.append("此列表页面是一个表单控件示例。");
         strIns.append("此列表页面是一个表单控件示例。");
@@ -596,6 +597,8 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         ModelAndView modelAndView = new ModelAndView();
         JSONObject jo = JSONObject.fromObject("{}");
 
+        testLog();
+
         jo.put("success",true);
         jo.put("msg","菜单按钮ajax异步操作成功！");
 
@@ -605,6 +608,41 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         return  modelAndView;
     }
 
+    private void testLog(){
+       /* Logger.debug ( Object message ) ;
+        Logger.info ( Object message ) ;
+        Logger.warn ( Object message ) ;
+        Logger.error ( Object message ) ;*/
+
+        logger.info("测试info级别记录信息");
+        try {
+            int a=10,b=0;
+            int c = a/b;
+        }catch (Exception e){
+            logger.info("测试info级别记录异常信息",e);
+        }
+
+        try {
+            throw new PlatformException("自定义异常");
+        }catch (Exception e){
+            logger.info("测试info级别记录PlatformException异常信息",e);
+        }
+
+
+        logger.warn("测试info级别记录信息");
+        try {
+            int a=10,b=0;
+            int c = a/b;
+        }catch (Exception e){
+            logger.warn("测试info级别记录异常信息",e);
+        }
+
+        try {
+            throw new PlatformException("自定义异常");
+        }catch (Exception e){
+            logger.warn("测试info级别记录PlatformException异常信息",e);
+        }
+    }
 
     @RequestMapping("/exampleBeanOpeSingDataAjaxReq.do")
     public ModelAndView exampleBeanOpeSingDataAjaxReq(HttpServletRequest request, HttpServletResponse response){
