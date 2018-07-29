@@ -12,7 +12,8 @@ import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +32,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/exampleBean")
 public class ExampleBeanController extends BaseController<ExampleBean> {
-    private final static Logger logger = Logger.getLogger(ExampleBeanController.class);
+    private final static Logger logger = LoggerFactory.getLogger(ExampleBeanController.class);
     @Resource
     private ExampleBeanService exampleBeanService;
 
