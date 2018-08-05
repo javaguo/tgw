@@ -34,6 +34,7 @@
         <module>basic-system-runtime-envir</module>
         <module>basic-example-service</module>
         <module>basic-example-web</module>
+        <module>basic-rabbitmq-service</module>
 
     </modules>
 
