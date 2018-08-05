@@ -1,4 +1,4 @@
-package com.tgw.basic.rabbitmq.test;
+package com.tgw.basic.rabbitmq.test.basic;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -6,9 +6,6 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by zjg on 2018/7/31.
- */
 public class Send {
 
     //队列名称
@@ -28,7 +25,7 @@ public class Send {
         //指定一个队列
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         //发送的消息
-        String message = "发送一条消息!";
+        String message = "hello world!";
         //往队列中发出一条消息
         channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
         System.out.println(" [x] Sent '" + message + "'");

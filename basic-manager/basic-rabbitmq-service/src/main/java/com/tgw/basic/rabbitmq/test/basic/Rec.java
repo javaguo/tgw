@@ -1,4 +1,4 @@
-package com.tgw.basic.rabbitmq.test;
+package com.tgw.basic.rabbitmq.test.basic;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -7,9 +7,6 @@ import com.rabbitmq.client.QueueingConsumer;
 
 import java.util.concurrent.TimeoutException;
 
-/**
- * Created by zjg on 2018/7/31.
- */
 public class Rec {
     //队列名称
     private final static String QUEUE_NAME = "hello";
