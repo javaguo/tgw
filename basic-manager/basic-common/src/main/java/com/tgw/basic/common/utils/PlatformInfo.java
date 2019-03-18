@@ -49,7 +49,7 @@ public class PlatformInfo {
 	}
 
 	/**
-	 * 获取访问平台的url地址：例：http://localhost:8080/项目访问名称/
+	 * 获取访问平台的url地址：例：http://localhost:8080/项目访问名称
 	 * @param request
 	 * @return
 	 */

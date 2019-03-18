@@ -32,6 +32,10 @@ public class LoginFilter implements Filter {
 			loginFilter = true;
 		}else if (  whiteUrlList.contains( url )  ) {
 			loginFilter = true;
+		}else if (url.startsWith("/m/")){// 移动端请求统一以"/m/"开头
+			String token = request.getParameter("token");
+			System.out.println("token："+token);
+			loginFilter = true;
 		}else{
 			UserSessionInfo userSessionInfo = (UserSessionInfo)request.getSession().getAttribute( PlatformSysConstant.USER_SESSION_INFO );
 			if( userSessionInfo!=null ){

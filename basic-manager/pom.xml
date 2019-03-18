@@ -36,6 +36,7 @@
         <module>basic-example-web</module>
         <module>basic-rabbitmq-service</module>
         <module>basic-thread-service</module>
+        <module>basic-mobile-web</module>
 
     </modules>
 

@@ -59,6 +59,13 @@
             <version>${basic-version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-mobile-web</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+
+        <!-- 其它第三方jar包 -->
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils-core -->
         <dependency>
             <groupId>commons-beanutils</groupId>
