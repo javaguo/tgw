@@ -6,14 +6,36 @@ import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.core.model.AbstractBaseBean;
-import com.tgw.basic.framework.model.form.field.*;
+import com.tgw.basic.framework.model.form.field.SysEnFieldBase;
+import com.tgw.basic.framework.model.form.field.SysEnFieldCheckbox;
+import com.tgw.basic.framework.model.form.field.SysEnFieldCheckboxGroup;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBox;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBoxGroup;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBoxOption;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBoxTree;
+import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
+import com.tgw.basic.framework.model.form.field.SysEnFieldDisplay;
+import com.tgw.basic.framework.model.form.field.SysEnFieldFile;
+import com.tgw.basic.framework.model.form.field.SysEnFieldHidden;
+import com.tgw.basic.framework.model.form.field.SysEnFieldHtmlEditor;
+import com.tgw.basic.framework.model.form.field.SysEnFieldListExtend;
+import com.tgw.basic.framework.model.form.field.SysEnFieldNumber;
+import com.tgw.basic.framework.model.form.field.SysEnFieldRadio;
+import com.tgw.basic.framework.model.form.field.SysEnFieldRadioGroup;
+import com.tgw.basic.framework.model.form.field.SysEnFieldTag;
+import com.tgw.basic.framework.model.form.field.SysEnFieldText;
+import com.tgw.basic.framework.model.form.field.SysEnFieldTextArea;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by zhaojg on 2016/10/20.
@@ -810,7 +832,7 @@ public class SysEnController extends AbstractBaseBean {
                 radio.setConfigs( radioConfigs );
             }
             if( tempJo.containsKey("checked") &&
-                ("true".equals( tempJo.get("checked") )  || true==tempJo.get("checked") )  ){
+                ("true".equals( tempJo.get("checked") )  || true==(Boolean) tempJo.get("checked") )  ){
                 radio.setChecked( "true" );
             }else{
                 radio.setChecked( "false" );
