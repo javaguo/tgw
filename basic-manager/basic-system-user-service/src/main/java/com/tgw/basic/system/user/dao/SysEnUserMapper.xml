@@ -7,6 +7,7 @@
 		<result column="user_name" property="userName"/>
 		<result column="login_name" property="loginName"/>
 		<result column="password" property="password"/>
+		<result column="token" property="token"/>
 		<result column="user_status" property="userStatus"/>
 		<result column="theme" property="theme"/>
 		<result column="remark" property="remark"/>
@@ -58,7 +59,7 @@
 
 	<select id="queryUserByLoginName"  resultMap="defaultResultMapSysEnUser">
 		select en_user.id,en_user.user_name,
-				en_user.login_name,en_user.password,
+				en_user.login_name,en_user.password,en_user.token,
 				en_user.remark,en_user.user_status,en_user.theme,
 				en_user.add_time,en_user.update_time
 		from sys_en_user en_user

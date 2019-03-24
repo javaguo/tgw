@@ -1,9 +1,18 @@
 package com.tgw.basic.system.user.filter;
 
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.spring.SpringContextUtils;
+import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
+import com.tgw.basic.system.user.service.SysEnUserService;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,8 +43,19 @@ public class LoginFilter implements Filter {
 			loginFilter = true;
 		}else if (url.startsWith("/m/")){// 移动端请求统一以"/m/"开头
 			String token = request.getParameter("token");
-			System.out.println("token："+token);
-			loginFilter = true;
+			String loginName = request.getParameter("loginName");
+
+			if (StringUtils.isBlank(token) || StringUtils.isBlank(loginName)){
+				loginFilter = false;
+			}else {
+				SysEnUserService sysEnUserService = (SysEnUserService)SpringContextUtils.getBeanById("sysEnUserService");
+				SysEnUser user = sysEnUserService.queryUserByLoginName(loginName);
+				if (user==null || StringUtils.isBlank(user.getToken()) || !user.getToken().equals(token)){
+					loginFilter = false;
+				}else{
+					loginFilter = true;
+				}
+			}
 		}else{
 			UserSessionInfo userSessionInfo = (UserSessionInfo)request.getSession().getAttribute( PlatformSysConstant.USER_SESSION_INFO );
 			if( userSessionInfo!=null ){

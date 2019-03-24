@@ -5,12 +5,13 @@ import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.system.config.service.SysEnConfigurationService;
 import com.tgw.basic.system.role.model.SysEnRole;
+import com.tgw.basic.system.user.enums.LoginSource;
 import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
 import com.tgw.basic.system.user.service.SysEnUserService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/login")
@@ -41,7 +43,8 @@ public class LoginController extends BaseController<SysEnUser> {
         ModelAndView modelAndView = new ModelAndView();
         JSONObject jo = JSONObject.fromObject("{}");
 
-        String loginName = request.getParameter("userName");
+        String loginName = request.getParameter("loginName");
+        loginName = StringUtils.isNotBlank(loginName)?loginName:request.getParameter("userName");// 后续逐步改为loginName。
         String password = request.getParameter("password");
 
         try {
@@ -67,11 +70,20 @@ public class LoginController extends BaseController<SysEnUser> {
                 throw new PlatformException("密码错误！");
             }
 
+            String loginSource = request.getParameter("loginSource");
+            if (LoginSource.M.name().equals(loginSource)){// 移动端登录
+                String token = UUID.randomUUID().toString().replaceAll("-","");// 目前使用一个简单的字符串，后续可以考虑使用JWT等。
+                sysEnUser.setToken(token);
+                this.getSysEnUserService().updateSysUserBaseInfo(sysEnUser);
+                jo.put("token",token);
+            }
+
             UserSessionInfo userSessionInfo = new UserSessionInfo();
             userSessionInfo.setSysEnUser( sysEnUser );
             userSessionInfo.setSysEnRoleList( sysEnRoleList );
 
             request.getSession().setAttribute( PlatformSysConstant.USER_SESSION_INFO,userSessionInfo);
+
 
             jo.put("success",true);
             jo.put("info","登录成功！");
