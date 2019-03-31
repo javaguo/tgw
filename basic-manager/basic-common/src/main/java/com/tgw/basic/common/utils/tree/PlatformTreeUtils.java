@@ -5,7 +5,7 @@ import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.common.utils.tree.model.SysEnTreeNode;
 import net.sf.json.JSONArray;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -75,7 +75,8 @@ public class PlatformTreeUtils {
 			smallTreeList = entry.getValue();
 			int nodeListSize = smallTreeList.size();
 			for (int i = 0; i < nodeListSize; i++) {
-				String findID = String.valueOf( smallTreeList.get(i).getId() );
+				String findID = smallTreeList.get(i).getId();
+				findID = StringUtils.isBlank(findID)?smallTreeList.get(i).getValue():findID;// 适应更多的树组件，找不到id，再按照value找一次。
 				List<SysEnTreeNode> findList = treeNodeMap.get(findID);
 				// 以下操作不能取出对象存放在变量中，否则将破坏树的完整性
 				smallTreeList.get(i).setChildren(findList);

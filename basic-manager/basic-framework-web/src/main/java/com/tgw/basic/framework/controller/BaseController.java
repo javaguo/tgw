@@ -15,7 +15,12 @@ import com.tgw.basic.core.model.AbstractBaseBean;
 import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
-import com.tgw.basic.framework.model.form.field.*;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBox;
+import com.tgw.basic.framework.model.form.field.SysEnFieldComboBoxGroup;
+import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
+import com.tgw.basic.framework.model.form.field.SysEnFieldDisplay;
+import com.tgw.basic.framework.model.form.field.SysEnFieldListExtend;
+import com.tgw.basic.framework.model.form.field.SysEnFieldTag;
 import com.tgw.basic.framework.service.BaseService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +41,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * BaseController中增、删、查、改各操作的主方法不声明throws  PlatformException。
@@ -580,15 +590,20 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			items = dealListQueryResultForFile(request,response,bean,items);
 			items = dealListQueryResult(request,response,bean,items);
 
+			afterSearchData(request,response, bean);
+
 			//组装查询结果
 			jo.put("total",queryResPage.getTotal() );
 			jo.put("items", items );
-
-			afterSearchData(request,response, bean);
+			jo.put("isLastPage",pageNum*pageSize>=queryResPage.getTotal()?true:false);
+			jo.put("success",true);
+			jo.put("msg","查询成功！");
 		}catch( PlatformException e ){
+			jo.put("success",false);
 			jo.put("msg", ""+e.getMsg() );
 			e.printStackTrace();
 		}catch(Exception e) {
+			jo.put("success",false);
 			jo.put("msg", "发生异常！" );
 			e.printStackTrace();
 		}
@@ -1173,7 +1188,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 					if( null==obj ){
 						throw new PlatformException("没有查找到要更新的信息！");
 					}else{
-
+						bean = (T)obj;
 					}
 					initBenaVal( request, response, obj);
 
@@ -1265,6 +1280,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			}
 
 			this.afterEdit(request,response,bean);
+			this.afterEdit(request,response,bean,jo);
 
 			jo.put("success",true);
 		} catch( PlatformException e ){
@@ -1290,6 +1306,18 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	 * @throws PlatformException
      */
 	public void afterEdit(HttpServletRequest request, HttpServletResponse response, T bean) throws PlatformException{
+
+	}
+
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @param bean
+	 * @param jo
+	 * @throws PlatformException
+	 */
+	public void afterEdit(HttpServletRequest request, HttpServletResponse response, T bean,JSONObject jo) throws PlatformException{
 
 	}
 

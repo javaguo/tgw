@@ -9,7 +9,9 @@ import java.util.List;
 public class SysEnTreeNode extends AbstractBaseBean {
 
 	private String id;
+	private String value;// 与id作用相似，只是名称不一样而已。不同的树组件上节点值叫法不一样，所以多定义一些属性。
 	private String text;
+	private String label;// 与text作用相似，只是名称不一样而已。
 	private String parentId;
 
 	private String qtip;
@@ -28,12 +30,28 @@ public class SysEnTreeNode extends AbstractBaseBean {
 		this.id = id;
 	}
 
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
 	public String getText() {
 		return text;
 	}
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getParentId() {

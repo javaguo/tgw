@@ -53,6 +53,10 @@ public class LoginFilter implements Filter {
 				if (user==null || StringUtils.isBlank(user.getToken()) || !user.getToken().equals(token)){
 					loginFilter = false;
 				}else{
+					UserSessionInfo userSessionInfo = new UserSessionInfo();
+					userSessionInfo.setSysEnUser( user );
+					request.getSession().setAttribute( PlatformSysConstant.USER_SESSION_INFO,userSessionInfo);
+
 					loginFilter = true;
 				}
 			}
