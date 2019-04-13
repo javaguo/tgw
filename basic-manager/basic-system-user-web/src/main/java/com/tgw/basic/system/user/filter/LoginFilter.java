@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
 		whiteUrlList.add( "/login/login.do" );
 
 		boolean loginFilter = false;
-		if ( url.matches(".*\\.(jpg|swf|png|gif|js|css|ico|less|html|htm|xls|xlsx)$") ) {
+		if ( url.matches(".*\\.(jpg|swf|png|gif|js|css|ico|less|html|htm|xls|xlsx|apk)$") ) {
 			loginFilter = true;
 		}else if (  whiteUrlList.contains( url )  ) {
 			loginFilter = true;
