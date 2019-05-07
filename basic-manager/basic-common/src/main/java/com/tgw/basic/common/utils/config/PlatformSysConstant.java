@@ -9,7 +9,7 @@ public class PlatformSysConstant {
 
     public static int LAYOUT_NUM_HORI_SEARCH_CONDITION=4;
 
-    public static int PAGE_SIZE=20;
+    public static int PAGE_SIZE=20;// 默认分页大小
 
     public static String JSONSTR = "jsonStr";
 
@@ -25,7 +25,7 @@ public class PlatformSysConstant {
     public static String DATE_FORMAT_EXT_HMS = "H:i:s";
 
     public static String FIELD_TYPE_GENERAL="general";//普通类型的字段，可进行增、删、查、改操作
-    public static String FIELD_TYPE_OPERATE="operate";//操作类型的字段，此类型的字段只在列表中出现，例：列表中第一行数据后的删除、查看详情。
+    public static String FIELD_TYPE_OPERATE="operate";//操作类型的字段，此类型的字段只在列表中出现，例：列表中每一行数据后的删除、查看详情。
 
     public static String FORM_XTYPE_HIDDEN = "hiddenfield";
     public static String FORM_XTYPE_TEXT = "textfield";
