@@ -33,6 +33,7 @@ public class LoginFilter implements Filter {
 		url = url.replace(contextPath, "");
 
 		List<String> whiteUrlList = new ArrayList<String>();
+		whiteUrlList.add( "/sysUser/register.do" );
 		whiteUrlList.add( "/login/toLogin.do" );
 		whiteUrlList.add( "/login/login.do" );
 

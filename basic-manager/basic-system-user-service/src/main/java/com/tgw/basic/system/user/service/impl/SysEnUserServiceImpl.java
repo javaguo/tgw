@@ -33,7 +33,7 @@ public class SysEnUserServiceImpl extends BaseServiceImpl implements SysEnUserSe
 
 	public SysEnUser queryUserByLoginName(String loginName) throws PlatformException {
 		if( StringUtils.isBlank( loginName ) ){
-			throw new PlatformException("用户名不能为空！");
+			throw new PlatformException("登录账号不能为空！");
 		}
 		SysEnUser sysEnUser = this.getSysEnUserMapper().queryUserByLoginName( loginName.trim() );
 		return sysEnUser;
@@ -41,6 +41,9 @@ public class SysEnUserServiceImpl extends BaseServiceImpl implements SysEnUserSe
 
 
 	public void saveSysUser(SysEnUser sysEnUser) throws PlatformException {
+		if (null!=this.queryUserByLoginName(sysEnUser.getLoginName())){
+			throw new PlatformException("账号已存在！");
+		}
 		this.getSysEnUserMapper().insert( sysEnUser );
 		this.saveSysReUserRole( sysEnUser.getId(),sysEnUser.getReUserRoleId() );
 	}

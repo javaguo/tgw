@@ -4,16 +4,20 @@ import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.PlatformInfo;
 import com.tgw.basic.common.utils.PlatformUtils;
 import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
+import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
+import com.tgw.basic.system.config.service.SysEnConfigurationService;
 import com.tgw.basic.system.menu.model.SysEnMenu;
 import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
 import com.tgw.basic.system.user.service.SysEnUserService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
 import net.sf.json.JSONArray;
-import org.apache.commons.lang.StringUtils;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,14 +25,20 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/sysUser")
 public class SysUserController extends BaseController<SysEnUser> {
 
-        @Resource
+    @Resource
 	public SysEnUserService sysEnUserService;
+    @Resource
+    private SysEnConfigurationService sysEnConfigurationService;
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -123,6 +133,59 @@ public class SysUserController extends BaseController<SysEnUser> {
     @Override
     public void deleteBatchBean( List<Object>  beanList ) throws PlatformException {
         this.getSysEnUserService().deleteSysUser( beanList );
+    }
+
+    /**
+     * 用户自己注册用户。app与pc端注册都使用此方法。
+     * @param request
+     * @param response
+     * @param bean
+     * @throws PlatformException
+     */
+    @RequestMapping("/register.do")
+    public ModelAndView register(HttpServletRequest request, HttpServletResponse response, SysEnUser bean ){
+        ModelAndView modelAndView = new ModelAndView();
+        JSONObject jo = JSONObject.fromObject("{}");
+
+        /**
+         * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
+         */
+        try{
+            modelAndView.setViewName( this.getJsonView() );
+
+            if ("off".equals( sysEnConfigurationService.querySysEnConfigValByKey("registerSwitch") )){
+                throw new PlatformException("暂时关闭对外注册通道！");
+            }
+
+            // 初始化用户信息
+            if (StringUtils.isBlank(bean.getUserName())){
+                bean.setUserName( "u_"+RandomStringUtils.randomAlphanumeric(10) );// u_ 代表用户自定义注册
+            }
+            if (StringUtils.isBlank(bean.getLoginName()) || StringUtils.isBlank(bean.getPassword())){
+                throw new PlatformException("用户名/密码不能为空！");
+            }
+            if (StringUtils.isBlank(bean.getReUserRoleId())){
+                // 记账项目中5代表普通用户角色。PC端登录需要有角色，默认自定义注册的都是普通用户。
+                bean.setReUserRoleId("5");
+            }
+            bean.setUserStatus("1");// 默认代表正常
+            // 至此，初始化用户信息成功
+        }catch( PlatformException e){
+            jo.put("success",false);
+            jo.put("msg",""+e.getMsg() );
+
+            modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+            return  modelAndView;
+        }catch (Exception e){
+            e.printStackTrace();
+            jo.put("success",false);
+            jo.put("msg","发生异常！");
+
+            modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+            return  modelAndView;
+        }
+
+        return this.save(request,response,bean);// 保存用户使用与管理端相同的方法
     }
 
     @Override
