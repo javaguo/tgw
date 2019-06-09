@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,13 @@ public class SysEnConstantController extends BaseController<SysEnConstant> {
     @Resource
     private SysEnConstantService sysEnConstantService;
 
+    @PostConstruct
+    public void initExpendMobile(){
+        if( null!=this.getSysEnConstantService() ){
+            super.initService(  this.getSysEnConstantService()  );
+        }
+    }
+
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
         controller.setIdentifier( "SysEnConstantList" );// 每一个列表页面的唯一身份id
@@ -35,9 +43,7 @@ public class SysEnConstantController extends BaseController<SysEnConstant> {
 
     @Override
     public void initSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, SysEnConstant bean)  throws PlatformException{
-        if( null!=this.getSysEnConstantService() ){
-            super.initService(  this.getSysEnConstantService()  );
-        }
+
     }
 
     @Override

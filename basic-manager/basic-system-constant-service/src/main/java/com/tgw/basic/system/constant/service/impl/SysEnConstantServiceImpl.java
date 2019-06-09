@@ -6,6 +6,8 @@ import com.tgw.basic.system.constant.service.SysEnConstantService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,6 +27,10 @@ public class SysEnConstantServiceImpl extends BaseServiceImpl implements SysEnCo
         if( null!= sysEnConstantMapper){
             super.setBaseModelMapper( this.getSysEnConstantMapper() );
         }
+    }
+
+    public List<Map<String, Object>> loadConstantByNamespace(String namespace) {
+        return this.getSysEnConstantMapper().loadConstantByNamespace(namespace);
     }
 
     public SysEnConstantMapper getSysEnConstantMapper() {

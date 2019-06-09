@@ -26,4 +26,11 @@
 		order by sec.namespace,sec.code
 	</select>
 
+	<select id="loadConstantByNamespace"  resultType="map">
+	SELECT ec.id,ec.name,ec.code
+	 from sys_en_constant ec
+	where ec.namespace = #{namespace}
+	  and ec.is_valid = 1
+	order by ec.code asc
+	</select>
 </mapper>
