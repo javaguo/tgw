@@ -192,8 +192,8 @@ Ext.define('Platform.form.field.VTypes', {
     accountNumber: function(value) {
         return this.accountNumberRe.test(value);
     },
-    accountNumberRe:/^[a-zA-Z][a-zA-Z0-9_]{4,15}$/,
-    accountNumberText:'不合法的账号，正确格式为：字母开头，长度在5~16之间，允许字母数字下划线',
+    accountNumberRe:/^[a-zA-Z][a-zA-Z0-9_]{2,15}$/,
+    accountNumberText:'不合法的账号，正确格式为：字母开头，长度在3~16之间，允许字母数字下划线',
     accountNumberMask:/[a-zA-Z0-9_]/,
 
     //密码(以字母开头，长度在6~18之间，只能包含字母、数字和下划线)
