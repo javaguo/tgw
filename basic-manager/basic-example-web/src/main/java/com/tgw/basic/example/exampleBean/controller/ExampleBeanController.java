@@ -11,9 +11,12 @@ import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
+import com.tgw.basic.redis.utils.template.PlatformRedisTempUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,8 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
     private final static Logger logger = LoggerFactory.getLogger(ExampleBeanController.class);
     @Resource
     private ExampleBeanService exampleBeanService;
+    @Autowired
+    private PlatformRedisTempUtil platformRedisTempUtil;
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -435,6 +441,8 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         controller.addJsFileNameUserDefinePath( "page/manage/example/exampleBean/js/menuUserDefineOpe.js" );
         controller.addFunctionUserDefineOperate("menu5","自定义操作","menuUserDefineOpe","Application",5);
 
+        controller.addFunctionBaseAjaxIndepe("exam_redis1","redis测试","exampleBean//ajaxRedisTest.do",true,"Application",6);
+
         StringBuilder strIns = new StringBuilder();
         strIns.append("    此列表页面是一个表单控件示例。");
         strIns.append("此列表页面是一个表单控件示例。");
@@ -692,6 +700,33 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         return  modelAndView;
     }
 
+    @RequestMapping("/ajaxRedisTest.do")
+    public ModelAndView ajaxRedisTest(){
+        ModelAndView modelAndView = new ModelAndView();
+        JSONObject jo = JSONObject.fromObject("{}");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
+        Date d = new Date();
+        String t = sdf.format(d);
+//        platformRedisTempUtil.delete("string");
+        Date startDate = new Date();
+        int total = 50*10000;
+        for(int i=1;i<total;i++){
+            platformRedisTempUtil.set("string_"+t+"_"+i, RandomStringUtils.randomAlphanumeric(10));
+        }
+        Date endDate = new Date();
+        jo.put("success",true);
+        String time = "用时"+ (endDate.getTime()-startDate.getTime())/1000+"秒"+((endDate.getTime()-startDate.getTime())%1000)+"毫秒！";
+        System.out.println("");
+        System.out.println("redis："+time);
+        jo.put("msg","执行redis测试完毕！"+time);
+
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.setViewName( this.getJsonView() );
+
+        return  modelAndView;
+    }
+
     private Map<String,Object> getFormBooleanDataMap(){
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("1","是");
@@ -780,5 +815,13 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
 
     public void setExampleBeanService(ExampleBeanService exampleBeanService) {
         this.exampleBeanService = exampleBeanService;
+    }
+
+    public PlatformRedisTempUtil getPlatformRedisTempUtil() {
+        return platformRedisTempUtil;
+    }
+
+    public void setPlatformRedisTempUtil(PlatformRedisTempUtil platformRedisTempUtil) {
+        this.platformRedisTempUtil = platformRedisTempUtil;
     }
 }
