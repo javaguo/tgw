@@ -25,10 +25,5 @@
             <artifactId>basic-common</artifactId>
             <version>${basic-version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-core</artifactId>
-            <version>${basic-version}</version>
-        </dependency>
     </dependencies>
 </project>

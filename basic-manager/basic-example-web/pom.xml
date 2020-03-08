@@ -32,6 +32,11 @@
             <artifactId>basic-example-service</artifactId>
             <version>${basic-version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-redis-service</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

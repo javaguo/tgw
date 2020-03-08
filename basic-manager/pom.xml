@@ -37,7 +37,6 @@
         <module>basic-rabbitmq-service</module>
         <module>basic-thread-service</module>
         <module>basic-mobile-web</module>
-        <module>basic-core</module>
         <module>basic-redis-service</module>
 
     </modules>
