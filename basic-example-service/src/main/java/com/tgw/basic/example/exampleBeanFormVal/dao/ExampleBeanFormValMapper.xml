@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.example.exampleBeanFormVal.dao.ExampleBeanFormValMapper">
+	<select id="searchData" parameterType="com.tgw.basic.example.exampleBeanFormVal.model.ExampleBeanFormVal"  resultType="map">
+select
+form.id,
+form.alpha,
+form.alphanum,
+form.email,
+form.url,
+form.letter,
+form.upper_case upperCase,
+form.lower_case lowerCase,
+form.letter_num letterNum,
+form.letter_num_underline letterNumUnderline,
+form.chinese_letter_num chineseLetterNum,
+form.chinese_letter_num_underline chineseLetterNumUnderline,
+form.chinese,
+form.character50,
+form.email_platform emailPlatform,
+form.mobile_no mobileNo,
+form.fixed_phone_no fixedPhoneNo,
+form.phone_no phoneNo,
+form.id_number15 idNumber15,
+form.id_number18 idNumber18,
+form.id_number idNumber,
+form.age,
+form.date_ymd dateYmd,
+form.qq,
+form.post_code postCode,
+form.ip,
+form.account_number accountNumber,
+form.general_password generalPassword,
+form.strong_password strongPassword,
+form.regex,
+form.regex_vtype regexVtype,
+form.val_text valText,
+form.val_text_param valTextParam,
+form.val_password valPassword,
+form.val_password_param valPasswordParam,
+form.val_text_area valTextArea,
+form.val_text_area_param valTextAreaParam,
+form.val_number valNumber,
+form.val_number_param valNumberParam,
+form.val_tag  valTag,
+form.val_tag_param valTagParam,
+form.val_date valDate,
+form.val_date_param valDateParam,
+form.val_combo_box valComboBox,
+form.val_combo_box_param valComboBoxParam,
+form.val_tree valTree,
+form.val_tree_param valTreeParam,
+form.val_file_url valFileUrl,
+form.val_file_orig_file_name valFileOrigFileName,
+form.val_file_param_url valFileParamUrl,
+form.val_file_param_orig_file_name valFileParamOrigFileName,
+form.regex_vtype_validator  regexVtypeValidator,
+form.add_time addTime,
+form.update_time updateTime
+from example_bean_form_val form
+order by form.update_time  desc
+	</select>
+
+	<select id="queryDistrictTreeMap"  resultType="map">
+		select tree.id,tree.name,tree.parent_id
+		from example_bean_tree tree
+	</select>
+</mapper>

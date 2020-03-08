@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.framework.dao.SysEnFrameMapper">
+
+    <select id="queryFuncByMenuIdentify"  resultType="map">
+        select menu.id,func.func_code,func.func_name
+        from sys_en_menu menu,sys_en_function func
+        where func.fk_sys_en_menu_id = menu.id
+        and menu.menu_identify = #{menuIdentify}
+        order by func.order_num asc
+    </select>
+
+    <select id="queryFuncByMenuIdentifyUserId"  resultType="map">
+        select menu.id,func.func_code ,func.func_name
+        from sys_en_menu menu,sys_en_function func,
+        sys_re_role_func rf,sys_en_role role,
+        sys_re_user_role ur,sys_en_user u
+        where menu.id = func.fk_sys_en_menu_id
+        and func.id = rf.fk_func_id
+        and rf.fk_role_id = role.id
+        and role.id = ur.fk_role_id
+        and ur.fk_user_id = u.id
+        and menu.menu_identify = #{menuIdentify}
+        and u.id = #{userId}
+        order by func.order_num asc
+    </select>
+
+    <select id="loadComboboxDataConstant"  resultType="map">
+        SELECT
+        sec.id,sec.name
+        from sys_en_constant sec
+        <where>
+            <if test="namespace!=null">
+                sec.namespace = #{namespace}
+            </if>
+            and sec.is_valid = '1'
+        </where>
+        order by sec.code asc
+    </select>
+</mapper>
