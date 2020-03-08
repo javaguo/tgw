@@ -1,0 +1,110 @@
+[{
+    "id":"A",
+    "text": "A一级",
+    "expanded": true,
+    "checked":false,
+    "children": [{
+        "id":"A1",
+        "text": "A1二级",
+        "checked":false,
+        "children": [{
+            "id":"A11",
+            "text": "A11三级",
+            "leaf": true,
+            "checked": false
+        },{
+            "id":"A12",
+            "text": "A12三级",
+            "leaf": true,
+            "checked": false
+        },{
+            "id":"A13",
+            "text": "A13三级",
+            "checked": false,
+            "children": [{
+                "id":"A131",
+                "text": "A131四级",
+                "leaf": true,
+                "checked": false
+            },{
+                "id":"A132",
+                "text": "A132四级",
+                "leaf": true,
+                "checked": false
+            },{
+                "id":"A133",
+                "text": "A133四级",
+                "leaf": true,
+                "checked": false
+            }]
+        }]
+    },{
+        "id":"A2",
+        "text": "A2二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"A3",
+        "text": "A3二级",
+        "leaf": true,
+        "checked": false
+    }]
+},{
+    "id":"B",
+    "text": "B一级",
+    "cls": "folder",
+    "checked":false,
+    "children": [{
+        "id":"B1",
+        "text": "B1二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"B2",
+        "text": "B2二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"B3",
+        "text": "B3二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"B4",
+        "text": "B4二级",
+        "cls": "folder",
+        "checked":false,
+        "children": [{
+            "id":"B41",
+            "text": "B41三级",
+            "leaf": true,
+            "checked": false
+        },{
+            "id":"B42",
+            "text": "B42三级",
+            "leaf": true,
+            "checked": false
+        }]
+    }]
+},{
+    "id":"C",
+    "text": "C一级",
+    "cls": "folder",
+    "checked":false,
+    "children": [{
+        "id":"C1",
+        "text": "C1二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"C2",
+        "text": "C2二级",
+        "leaf": true,
+        "checked": false
+    },{
+        "id":"C3",
+        "text": "C3二级",
+        "leaf": true,
+        "checked": false
+    }]
+}]  

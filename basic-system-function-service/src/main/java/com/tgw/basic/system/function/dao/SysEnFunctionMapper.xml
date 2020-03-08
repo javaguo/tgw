@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.basic.system.function.dao.SysEnFunctionMapper">
+
+	<resultMap id="defaultResultFunctionMap" type="com.tgw.basic.system.function.model.SysEnFunction">
+    	<id column="id" property="id"/>
+		<result column="fk_parent_id" property="fkParentId"/>
+		<result column="fk_sys_en_menu_id" property="fkSysEnMenuId"/>
+		<result column="func_identify" property="funcIdentify"/>
+    	<result column="func_name" property="funcName"/>
+   	 	<result column="func_code" property="funcCode"/>
+    	<result column="is_leaf" property="leaf"/>
+    	<result column="is_expanded" property="expanded"/>
+		<result column="order_num" property="orderNum"/>
+  	</resultMap>
+
+	<select id="searchData" parameterType="com.tgw.basic.system.menu.model.SysEnMenu" resultType="map">
+		<bind name="funcIdentifyCon" value="'%' + _parameter.getFuncIdentify() + '%'" />
+		<bind name="funcNameCon" value="'%' + _parameter.getFuncName() + '%'" />
+		<bind name="funcCodeCon" value="'%' + _parameter.getFuncCode() + '%'" />
+
+		SELECT fun.id,fun.func_identify funcIdentify,
+			p_fun.func_name fkParentId,
+			menu.text fkSysEnMenuId,
+			fun.func_name funcName,fun.func_code funcCode,
+			case fun.is_leaf when 1 then '是' when 0 then '否' else '' end leaf,
+			case fun.is_expanded when 1 then '是' when 0 then '否' else '' end expanded,
+			fun.order_num orderNum,
+			date_format(fun.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+			date_format(fun.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+
+		from sys_en_function fun
+		LEFT JOIN sys_en_function p_fun on p_fun.id = fun.fk_parent_id
+		LEFT JOIN sys_en_function p_p_fun on p_p_fun.id = p_fun.fk_parent_id
+		LEFT JOIN sys_en_function p_p_p_fun on p_p_p_fun.id = p_p_fun.fk_parent_id
+		LEFT JOIN sys_en_menu menu on menu.id = fun.fk_sys_en_menu_id
+		<where>
+			<if test="fkParentId!=null">
+				and fun.fk_parent_id = #{fkParentId}
+			</if>
+			<if test="fkSysEnMenuId!=null">
+				and fun.fk_sys_en_menu_id = #{fkSysEnMenuId}
+			</if>
+			<if test="funcIdentify!=null  and funcIdentify!=''">
+				and fun.func_identify like #{funcIdentifyCon}
+			</if>
+			<if test="funcName!=null  and funcName!=''">
+				and fun.func_name like #{funcNameCon}
+			</if>
+			<if test="funcCode!=null  and funcCode!=''">
+				and fun.func_code like #{funcCodeCon}
+			</if>
+		</where>
+		order by CONCAT_WS('',LPAD(p_p_p_fun.order_num,8,'0'),LPAD(p_p_fun.order_num,8,'0')
+							,LPAD(p_fun.order_num,8,'0'),LPAD(fun.order_num,8,'0') )  asc
+	</select>
+
+	<select id="queryFunctionTreeMap"  resultType="map">
+		select fun.id,fun.func_name,fun.fk_parent_id
+ 		from sys_en_function fun
+ 		order by fun.order_num
+	</select>
+
+	<select id="queryMenuTreeMap"  resultType="map">
+		SELECT menu.id,menu.text,menu.fk_parent_id
+		from sys_en_menu menu
+		order by menu.order_num
+	</select>
+</mapper>
