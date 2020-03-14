@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>basic-root</artifactId>
+        <groupId>com.tgw.basic</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <name>basic-parent</name>
+
+    <groupId>com.tgw.basic</groupId>
+    <artifactId>basic-parent</artifactId>
+    <version>${basic-version}</version>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <!-- tgw相关依赖开始 -->
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-core-model</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-common</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-system-runtime-envir</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-framework-model</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-framework-service</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-framework-web</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <!-- tgw相关依赖结束 -->
+    </dependencies>
+
+    <modules>
+        <module>../basic-core-model</module>
+        <module>../basic-common</module>
+        <module>../basic-framework-model</module>
+        <module>../basic-framework-service</module>
+        <module>../basic-framework-web</module>
+        <module>../basic-system-runtime-envir</module>
+
+        <module>../basic-rabbitmq-service</module>
+        <module>../basic-thread-service</module>
+        <module>../basic-redis-service</module>
+
+        <module>../basic-system-constant-service</module>
+        <module>../basic-system-constant-web</module>
+        <module>../basic-system-config-service</module>
+        <module>../basic-system-config-web</module>
+        <module>../basic-system-menu-service</module>
+        <module>../basic-system-menu-web</module>
+        <module>../basic-system-function-service</module>
+        <module>../basic-system-function-web</module>
+        <module>../basic-system-role-service</module>
+        <module>../basic-system-role-web</module>
+        <module>../basic-system-user-service</module>
+        <module>../basic-system-user-web</module>
+
+        <module>../basic-example-service</module>
+        <module>../basic-example-web</module>
+        <module>../basic-mobile-web</module>
+        <module>../basic-main-web</module>
+    </modules>
+    <profiles>
+        <profile>
+            <id>jetspeed</id>
+            <build>
+                <plugins>
+                    <!--<plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.0-beta-2</version>
+                        <configuration>
+                            <webXml>src/main/jetspeed/web.xml</webXml>
+                        </configuration>
+                    </plugin>-->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
