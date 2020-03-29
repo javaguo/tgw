@@ -1,10 +1,13 @@
 package com.tgw.basic.example.exampleBeanFormVal.controller;
 
 import com.tgw.basic.common.exception.PlatformException;
+import com.tgw.basic.example.exampleBean.controller.ExampleBeanController;
 import com.tgw.basic.example.exampleBeanFormVal.model.ExampleBeanFormVal;
 import com.tgw.basic.example.exampleBeanFormVal.service.ExampleBeanFormValService;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +24,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/exampleBeanFormVal")
 public class ExampleBeanFormValController extends BaseController<ExampleBeanFormVal> {
+    private static final Log LOG = LogFactory.getLog(ExampleBeanFormValController.class);
 
     @Resource
     private ExampleBeanFormValService exampleBeanFormValService;
@@ -170,8 +174,8 @@ public class ExampleBeanFormValController extends BaseController<ExampleBeanForm
          * 但validator不论值是否为空，都会进行正则验证，所以使用validator验证时要做好判空处理。
          */
 
-        controller.addJsFileName( "manage/exampleBeanFormVal/exampleBeanFormVal.js" );
-        controller.addJsFileNameUserDefinePath( "page/manage/example/exampleBeanFormVal/js/exampleBeanFormVal.js" );
+        controller.addJsFileName("exampleBeanFormVal/exampleBeanFormVal.js" );
+        controller.addJsFileNameUserDefinePath(ExampleBeanController.BASE_PATH_JS+"exampleBeanFormVal/exampleBeanFormVal.js" );
         String extConfigsTranText = "validatorFunName:'valText'";
         controller.addFieldText("valText","valText",true,true,true,true,true,null,extConfigsTranText);
 

@@ -9,6 +9,8 @@ import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
 import net.sf.json.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,12 +18,15 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.tgw.basic.example.exampleBean.controller.ExampleBeanController.BASE_PATH_JS;
+
 /**
  * Created by zhaojg on 2017/03/25
  */
 @Controller
 @RequestMapping("/exampleSearchModel")
 public class ExampleSearchModelController extends BaseController<ExampleBean> {
+    private static final Log LOG = LogFactory.getLog(ExampleSearchModelController.class);
 
     @Override
     public void initControllerBaseInfoSearchModel(SysEnController controller) throws PlatformException {
@@ -33,7 +38,7 @@ public class ExampleSearchModelController extends BaseController<ExampleBean> {
 
     @Override
     public void initSearchModel(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, ExampleBean bean) throws PlatformException{
-        controller.addJsFileNameUserDefinePath( "page/manage/example/exampleEcharts/js/exampleSearchModel.js" );
+        controller.addJsFileNameUserDefinePath(BASE_PATH_JS+"exampleEcharts/exampleSearchModel.js" );
 
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_SEARCH_CALLBACK_FUNCTION_NAME,"exampleSearchModelCallback");
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_FREE_AREA_ELEMENT_ID,"exampleSearchModelShowResEle");
@@ -63,8 +68,8 @@ public class ExampleSearchModelController extends BaseController<ExampleBean> {
         String formComboBoxTreeConfigs5 = "labelWidth:130,width:400,multiSelect:true,multiCascade:false";
         String formComboBoxTreeConfigs6 = "labelWidth:100,width:400,multiSelect:false,emptyText:'请选择地区'";
 
-        String treeUrl1=  "page/manage/example/exampleBean/js/tree/tree2.json";
-        String treeUrl2 = "page/manage/example/exampleBean/js/tree/tree2.json";
+        String treeUrl1=  BASE_PATH_JS+"exampleBean/tree/tree2.json";
+        String treeUrl2 = BASE_PATH_JS+"exampleBean/tree/tree2.json";
         String treeUrl3 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=false";
         String treeUrl4 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=true";
         String treeUrl5 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=true";

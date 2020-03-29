@@ -106,13 +106,15 @@ public class SysEnController extends AbstractBaseBean {
 
     /**
      * 添加列表中用到的js文件名。
+     * 已无可用意义，废弃掉
      *
      * 自定义函数js文件名。
-     * js文件必须放在resource/js/platform/manage目录下。
+     * js文件必须放在resource/platform/js/platform/目录下。
      * 文件名示例：exampleBeanFormVal.js或path1/path2/exampleBeanFormVal.js
      *
-     * @param jsFileName  js文件名，可包含路径。
+     * @param jsFileName  js文件名，可包含路径。resource/platform/js/platform/的相对路径
      */
+    @Deprecated
     public void addJsFileName( String jsFileName ) throws PlatformException {
         if( StringUtils.isBlank( jsFileName ) ){
             throw new PlatformException("配置的js文件名为空 ！");

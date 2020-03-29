@@ -3,6 +3,8 @@ package com.tgw.basic.rabbitmq.test.releaseSubscription;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.util.Date;
@@ -11,8 +13,9 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by lee on 2018/8/5.
  */
-public class EmitLog
-{
+public class EmitLog {
+    private static final Log LOG = LogFactory.getLog(EmitLog.class);
+
     private final static String EXCHANGE_NAME = "ex_log";
 
     public static void main(String[] args) throws IOException, TimeoutException {

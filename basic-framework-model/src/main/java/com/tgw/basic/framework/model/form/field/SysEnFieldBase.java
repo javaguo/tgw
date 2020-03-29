@@ -3,6 +3,8 @@ package com.tgw.basic.framework.model.form.field;
 
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.core.model.AbstractBaseBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 每个字段在页面上的属性
@@ -15,6 +17,8 @@ import com.tgw.basic.core.model.AbstractBaseBean;
  * Created by zhaojg on 2017/4/23.
  */
 public class SysEnFieldBase extends AbstractBaseBean {
+    private static final Log LOG = LogFactory.getLog(SysEnFieldBase.class);
+
     private String eleId;//表单元素id
     private String configs;
 
@@ -39,7 +43,7 @@ public class SysEnFieldBase extends AbstractBaseBean {
      * @return
      */
     public boolean judgeXtype( SysEnFieldBase fieldBase,String xtype){
-        System.out.println( "fieldBase--->"+fieldBase.toString() + "   xtype--->"+xtype );
+        LOG.debug( "fieldBase--->"+fieldBase.toString() + "   xtype--->"+xtype );
         boolean checkRes = false;
 
         Class objClass = null;

@@ -4,11 +4,14 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.concurrent.TimeoutException;
 
-public class ReceiveLogsToConsole
-{
+public class ReceiveLogsToConsole {
+    private static final Log LOG = LogFactory.getLog(ReceiveLogsToConsole.class);
+
     private final static String EXCHANGE_NAME = "ex_log";
 
     public static void main(String[] argv) throws java.io.IOException,

@@ -4,6 +4,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,8 +18,9 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by lee on 2018/8/5.
  */
-public class ReceiveLogsToSave
-{
+public class ReceiveLogsToSave {
+    private static final Log LOG = LogFactory.getLog(ReceiveLogsToSave.class);
+
     private final static String EXCHANGE_NAME = "ex_log";
 
     public static void main(String[] argv) throws java.io.IOException,

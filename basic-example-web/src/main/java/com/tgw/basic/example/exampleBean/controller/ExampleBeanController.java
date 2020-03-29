@@ -14,8 +14,8 @@ import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
 import com.tgw.basic.redis.utils.template.PlatformRedisTempUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +36,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/exampleBean")
 public class ExampleBeanController extends BaseController<ExampleBean> {
-    private final static Logger logger = LoggerFactory.getLogger(ExampleBeanController.class);
+    private static final Log LOG = LogFactory.getLog(ExampleBeanController.class);
+
     @Resource
     private ExampleBeanService exampleBeanService;
     @Autowired
     private PlatformRedisTempUtil platformRedisTempUtil;
+
+    public static final String VIEW_EXAMPLE = VIEW_PLATFORM+"example/";
+    public static final String BASE_PATH_JS = "resource/platform/js/example/";
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -161,8 +165,8 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         String formComboBoxTreeConfigs5 = null;
         String formComboBoxTreeConfigs6 = null;*/
 
-        String treeUrl1=  "page/manage/example/exampleBean/js/tree/tree2.json";
-        String treeUrl2 = "page/manage/example/exampleBean/js/tree/tree2.json";
+        String treeUrl1=  BASE_PATH_JS+"exampleBean/tree/tree2.json";
+        String treeUrl2 = BASE_PATH_JS+"exampleBean/tree/tree2.json";
         String treeUrl3 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=false";
         String treeUrl4 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=true";
         String treeUrl5 = "exampleBean/loadTreeData.do?fieldMap=id:id,text:name,parentId:parent_id&treeRootVal=-1&treeFlag=district&resType=map&multiSelect=true";
@@ -402,7 +406,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
 
         /**--------------------- 可操作的列表字段 示例开始 -----------------------------------------------------------------*/
         //设置自定义js函数所在的js文件；可以添加多个js文件。
-        controller.addJsFileNameUserDefinePath("page/manage/example/exampleBean/js/fieldUserDefineOpe.js");
+        controller.addJsFileNameUserDefinePath(BASE_PATH_JS+"exampleBean/fieldUserDefineOpe.js");
 
         controller.addFieldViewDetail("id",null);
         controller.addFieldSingleBaseAjaxReq( "exampleBeanOpeSingDataAjaxReq","基本ajax异步请求","exampleBean/exampleBeanOpeSingDataAjaxReq.do","id",null );
@@ -438,7 +442,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         controller.addFunctionAjaxUpdateFields("menu3","修改Double值","exampleBean/menuAjaxUpdate.do",true,"Applicationedit",3,controller,"formNumberDouble");
         controller.addFunctionAjaxUpdateFields("menu4","修改TextArea值","exampleBean/menuAjaxUpdate.do",false,"Applicationgo",4,controller,"formTextArea");
 
-        controller.addJsFileNameUserDefinePath( "page/manage/example/exampleBean/js/menuUserDefineOpe.js" );
+        controller.addJsFileNameUserDefinePath( BASE_PATH_JS+"exampleBean/menuUserDefineOpe.js" );
         controller.addFunctionUserDefineOperate("menu5","自定义操作","menuUserDefineOpe","Application",5);
 
         controller.addFunctionBaseAjaxIndepe("exam_redis1","redis测试","exampleBean//ajaxRedisTest.do",true,"Application",6);
@@ -503,7 +507,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
 
     @Override
     public List dealListQueryResult(HttpServletRequest request, HttpServletResponse response, ExampleBean bean, List dataList) throws PlatformException{
-        System.out.println("可以在具体业务的controller中对数据库的查询结果进行处理。");
+        LOG.info("可以在具体业务的controller中对数据库的查询结果进行处理。");
         /**
          *具体业务controller中可以覆写dealSearchData方法，可以对数据库的查询结果进行加工处理。
          *
@@ -606,8 +610,6 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         ModelAndView modelAndView = new ModelAndView();
         JSONObject jo = JSONObject.fromObject("{}");
 
-        testLog();
-
         jo.put("success",true);
         jo.put("msg","菜单按钮ajax异步操作成功！");
 
@@ -623,33 +625,33 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         Logger.warn ( Object message ) ;
         Logger.error ( Object message ) ;*/
 
-        logger.info("测试info级别记录信息");
+        LOG.info("测试info级别记录信息");
         try {
             int a=10,b=0;
             int c = a/b;
         }catch (Exception e){
-            logger.info("测试info级别记录异常信息",e);
+            LOG.info("测试info级别记录异常信息",e);
         }
 
         try {
             throw new PlatformException("自定义异常");
         }catch (Exception e){
-            logger.info("测试info级别记录PlatformException异常信息",e);
+            LOG.info("测试info级别记录PlatformException异常信息",e);
         }
 
 
-        logger.warn("测试info级别记录信息");
+        LOG.warn("测试info级别记录信息");
         try {
             int a=10,b=0;
             int c = a/b;
         }catch (Exception e){
-            logger.warn("测试info级别记录异常信息",e);
+            LOG.warn("测试info级别记录异常信息",e);
         }
 
         try {
             throw new PlatformException("自定义异常");
         }catch (Exception e){
-            logger.warn("测试info级别记录PlatformException异常信息",e);
+            LOG.warn("测试info级别记录PlatformException异常信息",e);
         }
     }
 
@@ -660,7 +662,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
 
         String id = request.getParameter("id");
 
-        System.out.println("请求参数：id-->"+id);
+        LOG.info("请求参数：id-->"+id);
 
         jo.put("success",true);
         jo.put("msg","单条数据ajax异步操作成功！");
@@ -681,7 +683,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         String formText = request.getParameter("formText");
         String formNumberInteger = request.getParameter("formNumberInteger");
 
-        System.out.println("请求参数：id-->"+id+"  formText-->"+formText+"  formNumberInteger-->"+formNumberInteger);
+        LOG.info("请求参数：id-->"+id+"  formText-->"+formText+"  formNumberInteger-->"+formNumberInteger);
 
         jo.put("success",true);
         jo.put("msg","单条数据自定义方法操作成功！");
@@ -696,7 +698,7 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
     public ModelAndView openNewTab(HttpServletRequest request, HttpServletResponse responsen){
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("page/manage/example/exampleBean/page/openNewTab");
+        modelAndView.setViewName(VIEW_EXAMPLE +"exampleBean/openNewTab");
         return  modelAndView;
     }
 
@@ -717,8 +719,8 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         Date endDate = new Date();
         jo.put("success",true);
         String time = "用时"+ (endDate.getTime()-startDate.getTime())/1000+"秒"+((endDate.getTime()-startDate.getTime())%1000)+"毫秒！";
-        System.out.println("");
-        System.out.println("redis："+time);
+        LOG.info("");
+        LOG.info("redis："+time);
         jo.put("msg","执行redis测试完毕！"+time);
 
         modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );

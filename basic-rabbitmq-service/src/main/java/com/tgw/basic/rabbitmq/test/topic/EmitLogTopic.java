@@ -3,11 +3,13 @@ package com.tgw.basic.rabbitmq.test.topic;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.UUID;
 
-public class EmitLogTopic
-{
+public class EmitLogTopic {
+    private static final Log LOG = LogFactory.getLog(EmitLogTopic.class);
 
     private static final String EXCHANGE_NAME = "topic_logs";
 

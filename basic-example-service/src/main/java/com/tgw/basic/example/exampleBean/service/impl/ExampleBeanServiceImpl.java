@@ -22,7 +22,6 @@ public class ExampleBeanServiceImpl extends BaseServiceImpl implements ExampleBe
 
     @Override
     public void initMapper() {
-        System.out.println("ExampleBeanServiceImpl-->initMapper()");
         /**
          * 具体业务service层必须覆写此方法
          */

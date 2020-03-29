@@ -19,36 +19,36 @@
 	<meta http-equiv="description" content="通用管理系统">
 
 	<link rel="stylesheet" type="text/css"
-		  href="resource/css/platform/manage/index/index.css">
+		  href="resource/platform/css/platform/manage/index/index.css">
 	<link rel="stylesheet" type="text/css"
-		  href="resource/plugin/extjs/extjs5/extjs5/packages/ext-theme-${theme}/build/resources/ext-theme-${theme}-all.css">
+		  href="resource/platform/plugin/extjs/extjs5/extjs5/packages/ext-theme-${theme}/build/resources/ext-theme-${theme}-all.css">
 	<%--<link rel="stylesheet" type="text/css"
-		  href="resource/plugin/extjs/extjs5/extjs5/packages/ext-theme-classic/build/resources/ext-theme-classic-all.css">--%>
+		  href="resource/platform/plugin/extjs/extjs5/extjs5/packages/ext-theme-classic/build/resources/ext-theme-classic-all.css">--%>
 	<link rel="stylesheet" type="text/css"
-		  href="resource/plugin/extjs/extjs5/extjs5/resources/css/icon.css">
+		  href="resource/platform/plugin/extjs/extjs5/extjs5/resources/css/icon.css">
 
-	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/md5/jquery.md5.js"></script>
+	<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/md5/jquery.md5.js"></script>
 	<!-- 需要放在index.jsp中提前加载，如果在业务页面中引入时报echarts is not define -->
-	<script type="text/javascript" src="<%=basePath%>resource/plugin/echart/echarts.min.js"></script>
+	<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/echart/echarts.min.js"></script>
 
 	<script type="text/javascript"
-			src="resource/plugin/extjs/extjs5/extjs5/ext-all.js"></script>
+			src="resource/platform/plugin/extjs/extjs5/extjs5/ext-all.js"></script>
 	<!-- 语言包要在ext-all.js之后引入才能生效 -->
 	<script type="text/javascript"
-			src="resource/plugin/extjs/extjs5/extjs5/locale/ext-lang-<%=browserLang%>.js"></script>
+			src="resource/platform/plugin/extjs/extjs5/extjs5/locale/ext-lang-<%=browserLang%>.js"></script>
 
 	<script type="text/javascript"
-			src="resource/plugin/extjs/extjs5/common/extPlatformCommon.js"></script>
+			src="resource/platform/plugin/extjs/extjs5/common/extPlatformCommon.js"></script>
 	<script type="text/javascript"
-			src="resource/plugin/extjs/extjs5/extend/validate/PlatformVTypes.js"></script>
+			src="resource/platform/plugin/extjs/extjs5/extend/validate/PlatformVTypes.js"></script>
 
 	<script type="text/javascript"
-			src="resource/js/platform/common/common.js"></script>
+			src="resource/platform/js/platform/common/common.js"></script>
 	<script type="text/javascript"
-			src="resource/js/platform/manage/index/index.js"></script>
+			src="resource/platform/js/platform/manage/index/index.js"></script>
 	<script type="text/javascript"
-			src="resource/js/platform/common/platformValidate.js"></script>
+			src="resource/platform/js/platform/common/platformValidate.js"></script>
 
 	<script type="text/javascript">
 		var globalBasePath = '<%=basePath%>';

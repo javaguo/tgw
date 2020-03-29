@@ -4,12 +4,15 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class NewTask
-{  
+public class NewTask {
+    private static final Log LOG = LogFactory.getLog(NewTask.class);
+
     // 队列名称  
     private final static String QUEUE_NAME = "workqueue_persistence";  
 

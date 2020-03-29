@@ -15,12 +15,12 @@
 		<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1" />
 		<title>通用后台管理系统</title>
 
-		<link rel="stylesheet" type="text/css" href="resource/css/platform/manage/login/login.css">
+		<link rel="stylesheet" type="text/css" href="resource/platform/css/platform/manage/login/login.css">
 
 
-		<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
-		<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/md5/jquery.md5.js"></script>
-		<script type="text/javascript" src="<%=basePath%>resource/js/platform/manage/login/manageLogin.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/md5/jquery.md5.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/js/platform/manage/login/manageLogin.js"></script>
 
 		<script type="text/javascript">
 			setContextPath('<%=basePath%>');
@@ -40,12 +40,12 @@
 					</div>
 					<div class="save">
 						<a href="javascript:login();"> 
-							<img src="resource/img/platform/manage/login/btnlogin.png"/>
+							<img src="resource/platform/img/platform/manage/login/btnlogin.png"/>
 						</a>
 					</div>
 					<div class="reset">
 						<a href="#">
-							<img src="resource/img/platform/manage/login/reset.png"/>
+							<img src="resource/platform/img/platform/manage/login/reset.png"/>
 						</a>
 					</div>
 				</form>

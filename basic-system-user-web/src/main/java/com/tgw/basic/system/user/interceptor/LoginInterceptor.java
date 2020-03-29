@@ -40,13 +40,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			return super.preHandle(request, response, handler);
 		}
 
-		if ( request.getRequestURI().startsWith(contextPath + "/page/manage/index/index.jsp") ) {
+		if ( request.getRequestURI().startsWith(contextPath + VIEW_BASE_PLATFORM+"manage/index/index.jsp") ) {
 			return super.preHandle(request, response, handler);
 		}
 
-		response.sendRedirect(contextPath + "/page/manage/index/index.jsp");*/
+		response.sendRedirect(contextPath + VIEW_BASE_PLATFORM+"manage/index/index.jsp");*/
 
-		/*if ( request.getRequestURI().startsWith(contextPath + "/page/manage/index/index.jsp") ) {
+		/*if ( request.getRequestURI().startsWith(contextPath + VIEW_BASE_PLATFORM+"manage/index/index.jsp") ) {
 			System.out.println("/login/toLogin.do");
 			response.sendRedirect(contextPath + "/login/toLogin.do");
 

@@ -2,10 +2,10 @@ Ext.Ajax.timeout = 60000;
 Ext.Loader.setConfig({
 	enabled : true,
 	paths:{
-		'Ext':'resource/plugin/extjs/extjs5/extjs5/examples',
-		'app':'resource/plugin/extjs/extjs5/extjs5/examples',
-		'Common.app':'resource/js/privateExt/manage/app',//与具体业务相关的定义
-		'Common.auth':'resource/js/privateExt/manage/auth'//权限相关的定义
+		'Ext':'resource/platform/plugin/extjs/extjs5/extjs5/examples',
+		'app':'resource/platform/plugin/extjs/extjs5/extjs5/examples',
+		'Common.app':'resource/platform/js/privateExt/manage/app',//与具体业务相关的定义
+		'Common.auth':'resource/platform/js/privateExt/manage/auth'//权限相关的定义
 	}
 });
 Ext.require([ 'Ext.ux.IFrame']);
@@ -410,7 +410,7 @@ var themeComboox = Ext.create({
 			var  theme = combo.getValue();
 			window.location.href=globalBasePath+"login/toManageIndex.do?theme="+theme;
 			//以下方式切换主题时，页面内部嵌套部分无法切换主题
-			/*var href = 'resource/js/extjs/extjs5/packages/ext-theme-'+theme+'/build/resources/ext-theme-'+theme+'-all.css';
+			/*var href = 'resource/platform/js/extjs/extjs5/packages/ext-theme-'+theme+'/build/resources/ext-theme-'+theme+'-all.css';
 			var link = Ext.fly('theme');
 
 			if(!link) {

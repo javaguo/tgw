@@ -4,10 +4,14 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.concurrent.TimeoutException;
 
 public class Rec {
+    private static final Log LOG = LogFactory.getLog(Rec.class);
+
     //队列名称
     private final static String QUEUE_NAME = "hello";
 

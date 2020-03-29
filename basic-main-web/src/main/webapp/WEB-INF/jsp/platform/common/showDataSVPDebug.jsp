@@ -22,13 +22,13 @@ String browserLang=request.getLocale().toString();
 	<%--
 	<c:if test='${controller.formValJsFileName!=null}'>
 		<script type="text/javascript"
-		 	src="resource/js/platform/${controller.formValJsFileName}"></script>			
+		 	src="resource/platform/js/platform/${controller.formValJsFileName}"></script>
 	</c:if>
 	--%>
 	<c:if test='${controller.jsFileNameSet!=null}'>
 		<c:forEach items="${controller.jsFileNameSet}" var="jsFileName">
 			<script type="text/javascript"
-				src="resource/js/platform/${jsFileName}"></script>
+				src="resource/platform/js/platform/${jsFileName}"></script>
 		</c:forEach>
 	</c:if>
 	 

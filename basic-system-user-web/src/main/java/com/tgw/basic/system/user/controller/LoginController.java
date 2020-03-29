@@ -34,7 +34,7 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/toLogin.do")
     public ModelAndView toLogin(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/manage/login");
+        modelAndView.setViewName(VIEW_PLATFORM+"manage/login");
         return  modelAndView;
     }
 
@@ -121,7 +121,7 @@ public class LoginController extends BaseController<SysEnUser> {
             this.getSysEnUserService().updateSysUserBaseInfo( sysEnUser );
         }
 
-        modelAndView.setViewName("page/manage/index/index");
+        modelAndView.setViewName(VIEW_PLATFORM+"manage/index/index");
         return  modelAndView;
     }
 
