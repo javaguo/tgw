@@ -266,7 +266,7 @@ CREATE TABLE `sys_en_configuration` (
 -- ----------------------------
 INSERT INTO `sys_en_configuration` VALUES ('1', '管理端首页配置信息', 'manageIndexKey', 'manageIndexVal', '', '2018-04-22 13:40:39', '2018-04-22 13:40:39', '-1');
 INSERT INTO `sys_en_configuration` VALUES ('2', '管理端首页欢迎语', 'manageIndexTopTitle', '欢迎使用数据管理系统', '', '2018-04-22 13:42:32', '2018-04-22 13:42:32', '1');
-INSERT INTO `sys_en_configuration` VALUES ('3', '管理端首页底部版权', 'manageIndexBottomCopyright', 'Copyright 2018 ZhaoJianGuo. AllRightsReserved.', '', '2018-04-22 13:43:07', '2018-04-22 13:43:07', '1');
+INSERT INTO `sys_en_configuration` VALUES ('3', '管理端首页底部版权', 'manageIndexBottomCopyright', 'Copyright 2018 JavaGuo. AllRightsReserved.', '', '2018-04-22 13:43:07', '2018-04-22 13:43:07', '1');
 
 -- ----------------------------
 -- Table structure for sys_en_function
@@ -340,8 +340,8 @@ CREATE TABLE `sys_en_menu` (
 -- ----------------------------
 INSERT INTO `sys_en_menu` VALUES ('1', '-1', null, '根结点', '', 'root', '0', '1', '0', '0', null, null);
 INSERT INTO `sys_en_menu` VALUES ('13', '1', null, '框架示例', null, '高级用户使用', '0', '1', '1', '001', null, null);
+INSERT INTO `sys_en_menu` VALUES ('17', '13', 'ExampleBeanList', '表单控件示例', 'exampleBean/search.do', '表单控件示例', '1', '1', '1', '001', null, null);
 INSERT INTO `sys_en_menu` VALUES ('16', '13', 'ExampleBeanFormVal', '表单验证示例', 'exampleBeanFormVal/search.do', '表单验证示例', '1', '1', '1', '002', null, null);
-INSERT INTO `sys_en_menu` VALUES ('17', '13', 'ExampleBeanList', '表单控件示例', 'exampleBean/search.do', '表单控件示例', '1', '1', '1', '003', null, null);
 INSERT INTO `sys_en_menu` VALUES ('20', '1', 'systemManage', '系统管理', '', '系统管理', '0', '1', '1', '000', null, '2017-09-27 22:03:10');
 INSERT INTO `sys_en_menu` VALUES ('21', '20', 'SysFunctionList', '功能配置管理', 'sysFunction/search.do', '功能配置管理', '1', '1', '1', '06', null, '2018-04-21 14:10:50');
 INSERT INTO `sys_en_menu` VALUES ('22', '20', 'BaseConstantList', '常量管理', 'baseConstant/search.do', '常量管理', '1', '1', '1', '01', null, '2018-04-21 14:11:46');

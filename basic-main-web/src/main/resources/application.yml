@@ -8,7 +8,7 @@ server:
 
 spring:
   datasource:
-      url: jdbc:mysql://localhost:3306/per?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://localhost:3306/tgw?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: root
       password: asdQWE123
       initial-size: 20
