@@ -2,7 +2,7 @@ package com.tgw.basic.example.exampleBeanFormVal.dao;
 
 
 import com.tgw.basic.example.exampleBeanFormVal.model.ExampleBeanFormVal;
-import com.tgw.basic.framework.dao.BaseModelMapper;
+import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 
 import java.util.List;
 import java.util.Map;

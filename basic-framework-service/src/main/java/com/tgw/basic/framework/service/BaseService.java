@@ -1,6 +1,6 @@
 package com.tgw.basic.framework.service;
 
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.core.model.AbstractBaseBean;
 
@@ -29,7 +29,7 @@ public interface BaseService {
      * @param object
      * @return
      */
-    public abstract Page searchData(int pageNum, int pageSize, Object object);
+    public abstract PageInfo searchData(int pageNum, int pageSize, Object object);
 
     /**
      * 保存对象

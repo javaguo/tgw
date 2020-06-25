@@ -3,8 +3,8 @@ package com.tgw.basic.framework.model.form.field;
 
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.core.model.AbstractBaseBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 每个字段在页面上的属性
@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
  * Created by zhaojg on 2017/4/23.
  */
 public class SysEnFieldBase extends AbstractBaseBean {
-    private static final Log LOG = LogFactory.getLog(SysEnFieldBase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SysEnFieldBase.class);
 
     private String eleId;//表单元素id
     private String configs;

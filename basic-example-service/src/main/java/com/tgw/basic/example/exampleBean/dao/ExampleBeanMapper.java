@@ -1,7 +1,7 @@
 package com.tgw.basic.example.exampleBean.dao;
 
 import com.tgw.basic.example.exampleBean.model.ExampleBean;
-import com.tgw.basic.framework.dao.BaseModelMapper;
+import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 
 import java.util.List;
 import java.util.Map;

@@ -11,11 +11,11 @@ import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
-import com.tgw.basic.redis.utils.template.PlatformRedisTempUtil;
+import com.tgw.basic.redis.utils.PlatformRedisStringUtil;
+import com.tgw.basic.redis.utils.PlatformRedisUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,19 +35,21 @@ import java.util.Map;
 @Controller
 @RequestMapping("/exampleBean")
 public class ExampleBeanController extends BaseController<ExampleBean> {
-    private static final Log LOG = LogFactory.getLog(ExampleBeanController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleBeanController.class);
 
     @Resource
     private ExampleBeanService exampleBeanService;
     @Autowired
-    private PlatformRedisTempUtil platformRedisTempUtil;
+    private PlatformRedisUtil platformRedisUtil;
+    @Autowired
+    private PlatformRedisStringUtil platformRedisStringUtil;
 
     public static final String VIEW_EXAMPLE = VIEW_PLATFORM+"example/";
     public static final String BASE_PATH_JS = "resource/platform/js/example/";
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
-        controller.setIdentifier( "ExampleBeanList" );// 每一个列表页面的唯一身份id
+        controller.setIdentifier( "ExampleBeanList" );// 每一个列表页面的唯一身份id。添加菜单时，菜单标识对应此处设置的id值。
         controller.setLoadDataUrl( "exampleBean/searchData.do" );//加载列表页面数据的方法
         controller.setControllerBaseUrl( "exampleBean/" );//控制器的请求地址
 
@@ -445,8 +446,6 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         controller.addJsFileNameUserDefinePath( BASE_PATH_JS+"exampleBean/menuUserDefineOpe.js" );
         controller.addFunctionUserDefineOperate("menu5","自定义操作","menuUserDefineOpe","Application",5);
 
-        controller.addFunctionBaseAjaxIndepe("exam_redis1","redis测试","exampleBean//ajaxRedisTest.do",true,"Application",6);
-
         StringBuilder strIns = new StringBuilder();
         strIns.append("    此列表页面是一个表单控件示例。");
         strIns.append("此列表页面是一个表单控件示例。");
@@ -620,11 +619,6 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
     }
 
     private void testLog(){
-       /* Logger.debug ( Object message ) ;
-        Logger.info ( Object message ) ;
-        Logger.warn ( Object message ) ;
-        Logger.error ( Object message ) ;*/
-
         LOG.info("测试info级别记录信息");
         try {
             int a=10,b=0;
@@ -638,7 +632,6 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         }catch (Exception e){
             LOG.info("测试info级别记录PlatformException异常信息",e);
         }
-
 
         LOG.warn("测试info级别记录信息");
         try {
@@ -699,33 +692,6 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName(VIEW_EXAMPLE +"exampleBean/openNewTab");
-        return  modelAndView;
-    }
-
-    @RequestMapping("/ajaxRedisTest.do")
-    public ModelAndView ajaxRedisTest(){
-        ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
-        Date d = new Date();
-        String t = sdf.format(d);
-//        platformRedisTempUtil.delete("string");
-        Date startDate = new Date();
-        int total = 50*10000;
-        for(int i=1;i<total;i++){
-            platformRedisTempUtil.set("string_"+t+"_"+i, RandomStringUtils.randomAlphanumeric(10));
-        }
-        Date endDate = new Date();
-        jo.put("success",true);
-        String time = "用时"+ (endDate.getTime()-startDate.getTime())/1000+"秒"+((endDate.getTime()-startDate.getTime())%1000)+"毫秒！";
-        LOG.info("");
-        LOG.info("redis："+time);
-        jo.put("msg","执行redis测试完毕！"+time);
-
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
-        modelAndView.setViewName( this.getJsonView() );
-
         return  modelAndView;
     }
 
@@ -819,11 +785,19 @@ public class ExampleBeanController extends BaseController<ExampleBean> {
         this.exampleBeanService = exampleBeanService;
     }
 
-    public PlatformRedisTempUtil getPlatformRedisTempUtil() {
-        return platformRedisTempUtil;
+    public PlatformRedisUtil getPlatformRedisUtil() {
+        return platformRedisUtil;
     }
 
-    public void setPlatformRedisTempUtil(PlatformRedisTempUtil platformRedisTempUtil) {
-        this.platformRedisTempUtil = platformRedisTempUtil;
+    public void setPlatformRedisUtil(PlatformRedisUtil platformRedisUtil) {
+        this.platformRedisUtil = platformRedisUtil;
+    }
+
+    public PlatformRedisStringUtil getPlatformRedisStringUtil() {
+        return platformRedisStringUtil;
+    }
+
+    public void setPlatformRedisStringUtil(PlatformRedisStringUtil platformRedisStringUtil) {
+        this.platformRedisStringUtil = platformRedisStringUtil;
     }
 }

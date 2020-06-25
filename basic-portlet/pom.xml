@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -36,6 +35,8 @@
   </dependencies>
 
   <modules>
+    <!--<module>../basic-root</module>-->
+    <!--<module>../basic-parent</module>-->
     <module>../basic-core-model</module>
     <module>../basic-common</module>
     <module>../basic-framework-model</module>
@@ -60,8 +61,12 @@
     <module>../basic-system-user-service</module>
     <module>../basic-system-user-web</module>
 
+    <module>../basic-example-api</module>
+    <module>../basic-example-provider</module>
+    <module>../basic-example-consumer</module>
     <module>../basic-example-service</module>
     <module>../basic-example-web</module>
+
     <module>../basic-mobile-web</module>
     <module>../basic-main-web</module>
   </modules>

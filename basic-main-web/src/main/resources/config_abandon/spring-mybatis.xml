@@ -22,7 +22,7 @@
     <!-- 引入配置文件 -->  
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="location" value="classpath:config/jdbc.properties" />  
+        <property name="location" value="classpath:config_abandon/jdbc.properties" />
     </bean>  
   
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
@@ -51,7 +51,7 @@
             <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
             <property name="basePackage" value="com.tgw"/>
 
-            <property name="markerInterface" value="com.tgw.basic.framework.dao.BaseModelMapper" />
+            <property name="markerInterface" value="com.tgw.basic.framework.baseMapper.BaseModelMapper" />
 
         <property name="properties">
             <value>

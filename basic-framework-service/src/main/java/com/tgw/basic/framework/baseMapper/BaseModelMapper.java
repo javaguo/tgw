@@ -1,4 +1,4 @@
-package com.tgw.basic.framework.dao;
+package com.tgw.basic.framework.baseMapper;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;

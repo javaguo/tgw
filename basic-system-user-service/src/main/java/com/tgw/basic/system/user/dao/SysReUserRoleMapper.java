@@ -1,7 +1,7 @@
 package com.tgw.basic.system.user.dao;
 
 
-import com.tgw.basic.framework.dao.BaseModelMapper;
+import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 import com.tgw.basic.system.role.model.SysEnRole;
 import com.tgw.basic.system.user.model.SysReUserRole;
 

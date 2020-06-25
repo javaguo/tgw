@@ -1,4 +1,4 @@
-package com.tgw.basic.redis.utils.template;
+package com.tgw.basic.redis.utils;
 
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
@@ -12,8 +12,6 @@ import java.util.List;
 /**
  * ProtoStuffSerializerUtil
  *
- * @author Sirius
- * @date 2019-1-8
  */
 public class ProtoStuffSerializerUtil {
     /**

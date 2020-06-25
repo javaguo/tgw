@@ -13,15 +13,17 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebFilter(urlPatterns = "/*", filterName = "loginFilter")
 public class LoginFilter implements Filter {
 
-	public void destroy() {
+	public void init(FilterConfig arg0) throws ServletException {
 
 	}
 
@@ -79,7 +81,7 @@ public class LoginFilter implements Filter {
 
 	}
 
-	public void init(FilterConfig arg0) throws ServletException {
+	public void destroy() {
 
 	}
 

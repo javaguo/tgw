@@ -5,6 +5,8 @@ import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.system.constant.model.SysEnConstant;
 import com.tgw.basic.system.constant.service.SysEnConstantService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +23,8 @@ import java.util.Date;
 @Controller
 @RequestMapping("/sysEnConstant")
 public class SysEnConstantController extends BaseController<SysEnConstant> {
+
+    private Logger logger = LoggerFactory.getLogger(SysEnConstantController.class);
 
     @Resource
     private SysEnConstantService sysEnConstantService;

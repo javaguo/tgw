@@ -6,8 +6,8 @@ import com.tgw.basic.example.exampleBeanFormVal.model.ExampleBeanFormVal;
 import com.tgw.basic.example.exampleBeanFormVal.service.ExampleBeanFormValService;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,7 +24,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/exampleBeanFormVal")
 public class ExampleBeanFormValController extends BaseController<ExampleBeanFormVal> {
-    private static final Log LOG = LogFactory.getLog(ExampleBeanFormValController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleBeanFormValController.class);
 
     @Resource
     private ExampleBeanFormValService exampleBeanFormValService;

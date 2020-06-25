@@ -1,0 +1,59 @@
+server:
+    port: 8082
+    servlet:
+      jsp:
+        init-parameters:
+          development: true
+      context-path: /provider
+
+spring:
+  datasource:
+      url: jdbc:mysql://localhost:3306/per?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      username: root
+      password: asdQWE123
+      initial-size: 20
+      min-idle: 20
+      max-active: 100
+      test-on-borrow: true
+      # MySQL 8.x: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    cache: false
+    enabled: false
+  profiles:
+    # test,dev,prod
+    active: prod
+
+mybatis:
+  #typeAliasesPackage: com.example.mybaitsxml.dao.entity
+  mapperLocations: classpath*:com/tgw/**/*.xml
+  #configLocation: classpath:config/mybatis-config.xml
+
+mapper:
+    mappers:
+        - com.tgw.basic.framework.baseMapper.BaseModelMapper
+    not-empty: false
+    identity: MYSQL
+
+pagehelper:
+    dialect: mysql
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: false
+    params: count=countSql
+    offset-as-page-num: true
+    rowBoundsWithCount: true
+    page-size-zero: true
+    returnPageInfo: none
+
+logging:
+  config: classpath:config/logback-spring.xml
+
+dubbo:
+  application:
+    name: baisc-example-provider
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    name: dubbo
+    port: 20880

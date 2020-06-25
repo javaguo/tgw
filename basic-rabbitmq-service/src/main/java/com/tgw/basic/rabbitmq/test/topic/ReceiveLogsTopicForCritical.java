@@ -4,11 +4,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReceiveLogsTopicForCritical {
-    private static final Log LOG = LogFactory.getLog(ReceiveLogsTopicForCritical.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiveLogsTopicForCritical.class);
 
     private static final String EXCHANGE_NAME = "topic_logs";
 

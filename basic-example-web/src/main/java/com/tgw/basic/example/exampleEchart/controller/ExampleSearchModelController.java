@@ -9,8 +9,8 @@ import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
 import net.sf.json.JSONObject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +26,7 @@ import static com.tgw.basic.example.exampleBean.controller.ExampleBeanController
 @Controller
 @RequestMapping("/exampleSearchModel")
 public class ExampleSearchModelController extends BaseController<ExampleBean> {
-    private static final Log LOG = LogFactory.getLog(ExampleSearchModelController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ExampleSearchModelController.class);
 
     @Override
     public void initControllerBaseInfoSearchModel(SysEnController controller) throws PlatformException {

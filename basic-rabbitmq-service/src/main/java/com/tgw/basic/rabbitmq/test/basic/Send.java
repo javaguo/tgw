@@ -3,13 +3,13 @@ package com.tgw.basic.rabbitmq.test.basic;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeoutException;
 
 public class Send {
-    private static final Log LOG = LogFactory.getLog(Send.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Send.class);
 
     //队列名称
     private final static String QUEUE_NAME = "hello";

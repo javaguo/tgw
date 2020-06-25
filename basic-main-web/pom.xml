@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
@@ -13,7 +14,20 @@
     <version>${basic-version}</version>
     <packaging>war</packaging>
 
+    <!-- 目前此pom配置打包后，用java -jar *.war 方式可以启动访问，部署到外部tomcat能启动但访问不了 -->
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-legacy</artifactId>
+            <version>1.1.0.RELEASE</version>
+        </dependency>-->
+
+
         <dependency>
             <groupId>com.tgw.basic</groupId>
             <artifactId>basic-system-constant-web</artifactId>
@@ -51,12 +65,34 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-example-consumer</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
             <artifactId>basic-mobile-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>basic-main-web</finalName>
+        <finalName>tgw</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- 如下两个配置保证打的包里有主清单配置且可以jar方式正确启动项目 -->
+                <configuration>
+                    <mainClass>com.StartApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>

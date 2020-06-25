@@ -49,7 +49,7 @@
 
 	<bean id="redisPropertyConfigurer"
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:config/redis.properties" />
+		<property name="location" value="classpath:config_abandon/redis.properties" />
 	</bean>
 
 	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
@@ -70,7 +70,7 @@
 		<property name="connectionFactory" ref="jedisConnectionFactory" />
 	</bean>
 
-	<bean id="platformRedisTempUtil" class="com.tgw.basic.redis.utils.template.PlatformRedisTempUtil">
+	<bean id="platformRedisTempUtil" class="com.tgw.basic.redis.utils.PlatformRedisStringUtil">
 		<property name="redisTemplate" ref="redisTemplate" />
 	</bean>
 </beans>

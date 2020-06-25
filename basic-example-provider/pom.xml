@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>basic-parent</artifactId>
+		<groupId>com.tgw.basic</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>basic-example-provider</artifactId>
+	<version>${basic-version}</version>
+	<packaging>jar</packaging>
+
+	<name>basic-example-provider</name>
+
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.tgw.basic</groupId>
+			<artifactId>basic-example-service</artifactId>
+			<version>${basic-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tgw.basic</groupId>
+			<artifactId>basic-example-api</artifactId>
+			<version>${basic-version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>tgw-example-provider</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<!-- 如下两个配置保证打的包里有主清单配置且可以jar方式正确启动项目 -->
+				<configuration>
+					<mainClass>com.tgw.basic.BasicExampleProviderApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

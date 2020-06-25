@@ -1,6 +1,6 @@
 package com.tgw.basic.framework.controller;
 
-import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.tgw.basic.common.beans.PlatformCustomDateEditor;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.PlatformInfo;
@@ -24,8 +24,8 @@ import com.tgw.basic.framework.model.form.field.SysEnFieldTag;
 import com.tgw.basic.framework.service.BaseService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -57,7 +57,8 @@ import java.util.Map;
  */
 @Controller
 public class BaseController<T extends AbstractBaseBean> implements Serializable {
-	private static final Log LOG = LogFactory.getLog(BaseController.class);
+
+	private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
 	private T bean;
 	private Class entityClass;
@@ -167,10 +168,10 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 
 		}catch( PlatformException e ){
 			modelAndView.setViewName(VIEW_PLATFORM+"common/showDataError");
-			LOG.error(e);
+			LOG.error("",e);
 		}catch( Exception e ){
 			modelAndView.setViewName(VIEW_PLATFORM+"common/showDataError");
-			LOG.error(e);
+			LOG.error("",e);
 		}
 
 		return  modelAndView;
@@ -237,10 +238,10 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 
 		}catch( PlatformException e ){
 			modelAndView.setViewName(VIEW_PLATFORM+"common/showDataError");
-			LOG.error(e);
+			LOG.error("",e);
 		}catch( Exception e ){
 			modelAndView.setViewName(VIEW_PLATFORM+"common/showDataError");
-			LOG.error(e);
+			LOG.error("",e);
 		}
 
 		return  modelAndView;
@@ -543,7 +544,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		}catch (PlatformException e){
 			throw e;
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			throw new PlatformException("未知异常！");
 		}
 	}
@@ -586,8 +587,10 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			int pageSize = Integer.parseInt(pageSizeStr);
 
 			//查询数据
-			Page queryResPage = this.getBaseService().searchData(pageNum,pageSize,bean);
-			List items = queryResPage.getResult();
+			PageInfo queryResPage = this.getBaseService().searchData(pageNum,pageSize,bean);
+			List items = queryResPage.getList();
+			/*Page queryResPage = this.getBaseService().searchData(pageNum,pageSize,bean);
+			List items = queryResPage.getResult();*/
 
 			//将自定义列的相关配置添加到查询结果items中
 			items = addFieldConfigListExtend(request,response,bean,items);
@@ -606,11 +609,11 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		}catch( PlatformException e ){
 			jo.put("success",false);
 			jo.put("msg", ""+e.getMsg() );
-			LOG.error(e);
+			LOG.error("",e);
 		}catch(Exception e) {
 			jo.put("success",false);
 			jo.put("msg", "发生异常！" );
-			LOG.error(e);
+			LOG.error("",e);
 		}
 
 		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
@@ -848,7 +851,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			path = path.replace("/",File.separator).replace("\\",File.separator);
 			fileName = (String)fileNameMethod.invoke(obj);
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			path = File.separator+"resource"+File.separator+"other"+File.separator+"downloadError.txt";
 			fileName = "文件下载出错提示.txt";
 		}
@@ -883,9 +886,9 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			this.beforeAdd(request,response,bean);
 			this.afterAdd(request,response,bean);
 		}catch (PlatformException e){
-			LOG.error(e);
+			LOG.error("",e);
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 		}
 
 		return  modelAndView;
@@ -951,7 +954,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			jo.put("success",false);
 			jo.put("msg",""+e.getMsg() );
 		}catch (Exception e){
-            LOG.error(e);
+            LOG.error("",e);
             jo.put("success",false);
             jo.put("msg","发生异常！");
         }
@@ -1057,7 +1060,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 					try{
 						file.transferTo( objFile );
 					}catch (Exception e){
-						LOG.error(e);
+						LOG.error("",e);
 						throw new PlatformException("保存附件内容出错！");
 					}
 
@@ -1074,10 +1077,10 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 						fileUrlMethod.invoke(bean,savePath);
 						fileNameMethod.invoke(bean,file.getOriginalFilename());
 					}catch (NoSuchMethodException e){
-						LOG.error(e);
+						LOG.error("",e);
 						throw new PlatformException("上传附件配置错误，缺少相关字段！");
 					}catch (Exception e){
-						LOG.error(e);
+						LOG.error("",e);
 						throw new PlatformException("保存附件信息出错！");
 					}
 
@@ -1292,7 +1295,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			jo.put("success",false);
 			jo.put("msg",""+e.getMsg());
 		} catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			jo.put("success",false);
 			jo.put("msg","发生异常！");
 		}
@@ -1363,7 +1366,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			jo.put("success",false);
 			jo.put("msg",""+e.getMsg());
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			jo.put("success",false);
 			jo.put("msg","发生异常！");
 		}
@@ -1578,7 +1581,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 									fileUrlMethod.invoke(oldObj,savePath);
 									fileNameMethod.invoke(oldObj,file.getOriginalFilename());
 								}catch (NoSuchMethodException e){
-									LOG.error(e);
+									LOG.error("",e);
 									throw new PlatformException("上传附件配置错误，缺少相关字段！");
 								}
 
@@ -1603,7 +1606,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		}catch (PlatformException e){
 			throw new PlatformException( e.getMsg() );
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			throw new PlatformException( "发生异常！" );
 		}
 
@@ -1662,7 +1665,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			jo.put("success",false);
 			jo.put("msg",""+e.getMsg());
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			jo.put("success",false);
 			jo.put("msg","发生异常！");
 		}
@@ -1707,7 +1710,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
             jo.put("success",false);
             jo.put("msg",""+e.getMsg());
         } catch (Exception e){
-            LOG.error(e);
+            LOG.error("",e);
             jo.put("success",false);
             jo.put("msg","发生异常！");
         }
@@ -1749,7 +1752,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		} catch( PlatformException e ){
 			throw new PlatformException( e.getMsg() );
 		} catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			throw new PlatformException( "发生异常！" );
 		}
 
@@ -1824,7 +1827,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			jo.put("success",false);
 			jo.put("msg",""+e.getMsg());
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			jo.put("success",false);
 			jo.put("msg","发生异常！");
 		}
@@ -1902,7 +1905,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		}catch (PlatformException e){
 			throw new PlatformException( e.getMsg() );
 		}catch (Exception e){
-			LOG.error(e);
+			LOG.error("",e);
 			throw new PlatformException( "发生异常！" );
 		}
 	}
@@ -1961,7 +1964,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		} catch(PlatformException e) {
 			json = "{\"success\":false,\"msg\":\"加载数据失败！"+e.getMsg()+"\",\"comboboxData\":[]}";
 		}catch(Exception e) {
-			LOG.error(e);
+			LOG.error("",e);
 			json = "{\"success\":false,\"msg\":\"加载数据失败，发生异常！\",\"comboboxData\":[]}";
 		}
 
@@ -2032,7 +2035,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 		} catch (PlatformException e){
 			modelAndView.addObject("jsonStr", "[{\"success\":false,\"msg\":\"加载数据失败！"+e.getMsg()+"\"}]" );
 		}catch(Exception e) {
-			LOG.error(e);
+			LOG.error("",e);
 			modelAndView.addObject("jsonStr", "[{\"success\":false,\"msg\":\"加载数据失败，发生异常！\"}]" );
 		}
 

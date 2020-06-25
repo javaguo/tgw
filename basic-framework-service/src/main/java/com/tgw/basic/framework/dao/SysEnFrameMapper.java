@@ -1,12 +1,15 @@
 package com.tgw.basic.framework.dao;
 
 import com.tgw.basic.common.exception.PlatformException;
+import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 import com.tgw.basic.framework.model.frame.SysEnFrame;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface SysEnFrameMapper extends BaseModelMapper<SysEnFrame> {
 
     /**

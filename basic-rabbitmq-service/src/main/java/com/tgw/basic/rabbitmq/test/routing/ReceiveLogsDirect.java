@@ -4,14 +4,14 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class ReceiveLogsDirect {
-    private static final Log LOG = LogFactory.getLog(ReceiveLogsDirect.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiveLogsDirect.class);
 
     private static final String EXCHANGE_NAME = "ex_logs_direct";
     private static final String[] SEVERITIES = { "info", "warning", "error" };

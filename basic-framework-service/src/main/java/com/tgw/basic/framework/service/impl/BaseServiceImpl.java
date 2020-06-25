@@ -1,16 +1,16 @@
 package com.tgw.basic.framework.service.impl;
 
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.core.model.AbstractBaseBean;
-import com.tgw.basic.framework.dao.BaseModelMapper;
+import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 import com.tgw.basic.framework.dao.SysEnFrameMapper;
 import com.tgw.basic.framework.service.BaseService;
 import net.sf.json.JSONObject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,7 +22,7 @@ import java.util.Map;
 @Service("baseService")
 public  class BaseServiceImpl implements BaseService,Serializable {
 
-    private static final Log LOG = LogFactory.getLog(BaseServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseServiceImpl.class);
 
     /**
      * baseModelMapper目前没有实现注入，自动注入时报找不到对应的bean。
@@ -46,19 +46,19 @@ public  class BaseServiceImpl implements BaseService,Serializable {
 
     }*/
 
-    public Page searchData(int pageNum, int pageSize, Object object) {
+    public PageInfo searchData(int pageNum, int pageSize, Object object) {
         LOG.debug("----------------- 父类BaseServiceImpl --> searchData-----------------");
 
         //this.initSearchData(pageNum,pageSize,object);
 
         //分页查询数据
         PageHelper.startPage(pageNum,pageSize);
-        BaseModelMapper baseModelMappertemp = this.getBaseModelMapper();
         List<Map<String,Object>> queryResList =this.getBaseModelMapper().searchData(object);
-        Page queryResPage = (Page) queryResList;
+        PageInfo pageInfo= new PageInfo(queryResList);
+//        Page queryResPage = (Page) queryResList; // error: java.util.ArrayList cannot be cast to com.github.pagehelper.Page
 
-        LOG.debug("总数："+queryResPage.getTotal() +"   页数："+queryResPage.getPages()+"    第几页："+queryResPage.getPageNum() + "   每页大小："+queryResPage.getPageSize() );
-        return queryResPage;
+        LOG.debug(pageInfo!=null?pageInfo.toString():"searchData method,variable pageInfo is null!");
+        return pageInfo;
     }
 
     public void saveBean(AbstractBaseBean abstractBaseBean) {
@@ -106,10 +106,10 @@ public  class BaseServiceImpl implements BaseService,Serializable {
             jo.put("comboboxData", queryResList );
             resultStr = jo.toString();
         }catch (NoSuchMethodException e){
-            e.printStackTrace();
+            LOG.error("",e);
             throw new PlatformException("没有找到查询combobox数据的方法。");
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("",e);
             throw new PlatformException("查询combobox数据出错。");
         }
 
@@ -138,10 +138,10 @@ public  class BaseServiceImpl implements BaseService,Serializable {
             Method method = baseModelMapperClass.getDeclaredMethod(loadDataMethodName );
            queryResList = (List<Map<String,Object>>)method.invoke(  this.getBaseModelMapper() );
         }catch (NoSuchMethodException e){
-            e.printStackTrace();
+            LOG.error("",e);
             throw new PlatformException("没有找到查询Tree数据的方法。");
         }catch (Exception e){
-            e.printStackTrace();
+            LOG.error("",e);
             throw new PlatformException("查询Tree数据出错。");
         }
 

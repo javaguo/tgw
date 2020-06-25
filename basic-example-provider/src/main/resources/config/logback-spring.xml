@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration scan="true" scanPeriod="60 seconds">
+
+	<contextName>tgw</contextName>
+	<!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。 -->
+	<!-- 日志文件输出位置 -->
+	<property name="TGW_LOG_HOME" value="../logs_tgw" />
+	<property name="TGW_CHARSET" value="UTF-8" />
+	<!-- 输出格式 -->
+	<property name="TGW_PATTERN_LAYOUT" value="%d{MM-dd HH:mm:ss} [%thread] %-5level %logger: %msg%n" />
+	<property name="TGW_PATTERN_LAYOUT_DETAIL" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger: %msg%n" />
+	<!-- 活动文件的大小 -->
+	<property name="TGW_MAX_FILE_SIZE" value="10MB" /><!--10MB -->
+	<!-- 控制所有日志文件的总大小 -->
+	<property name="TGW_TOTAL_SIZE_CAP" value="1GB" /><!-- 1GB -->
+	<!-- 保留日志的最大历史天数 -->
+	<property name="TGW_MAX_HISTORY" value="30" />
+
+
+	<!-- Example示例：滚动输出日志文件，配合logger配置将com.tgw.basic.example类下的日志单独输出到一个日志文件中 -->
+	<appender name="ExampleDailyRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 正在记录的日志文件的路径及文件名 -->
+		<file>${TGW_LOG_HOME}/tgw_example.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${TGW_PATTERN_LAYOUT}</pattern>
+			<charset>${TGW_CHARSET}</charset>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!-- 注意：example示例设置为了DEBUG级别 -->
+			<level>DEBUG</level>
+		</filter>
+		<!-- 此日志文件只记录debug级别的 -->
+		<!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>debug</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>-->
+
+		<!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${TGW_LOG_HOME}/%d{yyyy-MM-dd}/tgw_example.%i.log</fileNamePattern>
+			<maxFileSize>${TGW_MAX_FILE_SIZE}</maxFileSize>
+			<totalSizeCap>${TGW_TOTAL_SIZE_CAP}</totalSizeCap>
+			<maxHistory>${TGW_MAX_HISTORY}</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+
+		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${TGW_LOG_HOME}/%d{yyyy-MM-dd}/tgw_example.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${TGW_MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<totalSizeCap>${TGW_TOTAL_SIZE_CAP}</totalSizeCap>
+			<maxHistory>${TGW_MAX_HISTORY}</maxHistory>
+		</rollingPolicy>-->
+	</appender>
+
+	<!-- 输出到控制台 -->
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${TGW_PATTERN_LAYOUT}</pattern>
+			<!--<charset>${TGW_CHARSET}</charset>-->
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+	</appender>
+
+	<appender name="DefaultRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${TGW_LOG_HOME}/tgw_default.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${TGW_PATTERN_LAYOUT}</pattern>
+			<charset>${TGW_CHARSET}</charset>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${TGW_LOG_HOME}/%d{yyyy-MM-dd}/tgw_default.%i.log</fileNamePattern>
+			<maxFileSize>${TGW_MAX_FILE_SIZE}</maxFileSize>
+			<totalSizeCap>${TGW_TOTAL_SIZE_CAP}</totalSizeCap>
+			<maxHistory>${TGW_MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="DailyRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${TGW_LOG_HOME}/tgw.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${TGW_PATTERN_LAYOUT}</pattern>
+			<charset>${TGW_CHARSET}</charset>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${TGW_LOG_HOME}/%d{yyyy-MM-dd}/tgw.%i.log</fileNamePattern>
+			<maxFileSize>${TGW_MAX_FILE_SIZE}</maxFileSize>
+			<totalSizeCap>${TGW_TOTAL_SIZE_CAP}</totalSizeCap>
+			<maxHistory>${TGW_MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<!--
+        <logger>用来设置某一个包或者具体的某一个类的日志打印级别、
+        以及指定<appender>。<logger>仅有一个name属性，
+        一个可选的level和一个可选的 additivity 属性。
+        name:用来指定受此logger约束的某一个包或者具体的某一个类。
+        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，
+              还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。
+              如果未设置此属性，那么当前logger将会继承上级的级别。
+        additivity:是否向上级logger传递打印信息。默认是true。如果再向上传递就会被root下的appender再次打印。
+    -->
+	<!--<logger name="com.tgw.basic.example" level="DEBUG" additivity="false"/>-->
+
+	<!-- application中可指定active值 spring.profiles.active=prod -->
+	<!-- 测试环境+开发环境. 多个使用逗号隔开 -->
+	<springProfile name="test,dev">
+		<root level="INFO">
+			<appender-ref ref="Console"/>
+		</root>
+	</springProfile>
+	<!-- 生产环境. -->
+	<springProfile name="prod">
+		<logger name="com.tgw.basic.example" level="DEBUG" additivity="false">
+			<appender-ref ref="ExampleDailyRollingFile"/>
+		</logger>
+		<logger name="com.tgw" level="DEBUG" additivity="false">
+			<appender-ref ref="DailyRollingFile"/>
+		</logger>
+		<root level="INFO">
+			<appender-ref ref="Console"/>
+			<appender-ref ref="DefaultRollingFile"/>
+		</root>
+	</springProfile>
+
+</configuration>

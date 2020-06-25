@@ -5,7 +5,7 @@
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
   <!-- 编码过滤器 -->
-  <filter>
+<!--  <filter>
     <filter-name>encodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <async-supported>true</async-supported>
@@ -17,8 +17,10 @@
   <filter-mapping>
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping>-->
 
+  <!-- 通过spring boot过滤，此处配置废弃 -->
+<!--
   <filter>
     <filter-name>loginFilter</filter-name>
     <filter-class>com.tgw.basic.system.user.filter.LoginFilter</filter-class>
@@ -26,16 +28,16 @@
   <filter-mapping>
     <filter-name>loginFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping>-->
 
   <!-- logback日志相关配置 -->
-  <context-param>
+<!--  <context-param>
     <param-name>logbackConfigLocation</param-name>
-    <param-value>classpath:config/logback.xml</param-value>
+    <param-value>classpath:config/logback-spring.xml</param-value>
   </context-param>
   <listener>
     <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
-  </listener>
+  </listener>-->
 
   <!-- log4j日志相关配置 -->
   <!--<context-param>
@@ -52,22 +54,46 @@
     </listener-class>
   </listener>-->
 
-  <context-param>
+  <!--<context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:config/spring-mybatis.xml</param-value>
+  </context-param>-->
+
+  <!--<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>com.StartApplication</param-value>
   </context-param>
 
-  <!-- Spring监听器 -->
   <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <!-- 防止Spring内存溢出监听器 -->
-  <listener>
-    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    <listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
   </listener>
 
-  <!-- Spring MVC servlet -->
   <servlet>
+    <servlet-name>appServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextAttribute</param-name>
+      <param-value>org.springframework.web.context.WebApplicationContext.ROOT</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>appServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>-->
+
+  <!-- Spring监听器 -->
+<!--  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>-->
+  <!-- 防止Spring内存溢出监听器 -->
+<!--  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>-->
+
+  <!-- Spring MVC servlet -->
+  <!--<servlet>
     <servlet-name>mvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
@@ -79,7 +105,7 @@
   <servlet-mapping>
     <servlet-name>mvc</servlet-name>
     <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
 
   <!--
   <servlet>
@@ -131,12 +157,12 @@
     <url-pattern>/ckeditor/uploader</url-pattern>
   </servlet-mapping>
 -->
-  <display-name></display-name>
+<!--  <display-name></display-name>
   <welcome-file-list>
     <welcome-file>login/toManageIndex.do</welcome-file>
   </welcome-file-list>
 
   <session-config>
     <session-timeout>30</session-timeout>
-  </session-config>
+  </session-config>-->
 </web-app>
