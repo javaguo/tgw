@@ -1,4 +1,4 @@
-创建此分支是为了保留基于springMVC开发的内容。master已经改为了使用springboot模式。
+创建此分支是为了保留基于spring MVC开发的内容。master已经改为了使用Spring Boot模式。
 
  # maven编译顺序
  按照如下顺序编译项目
