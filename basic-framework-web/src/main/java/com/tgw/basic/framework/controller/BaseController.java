@@ -8,6 +8,7 @@ import com.tgw.basic.common.utils.PlatformUtils;
 import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.common.utils.file.PlatformFileUtils;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.common.utils.tree.PlatformTreeUtils;
 import com.tgw.basic.common.utils.tree.model.SysEnTreeNode;
@@ -22,7 +23,6 @@ import com.tgw.basic.framework.model.form.field.SysEnFieldDisplay;
 import com.tgw.basic.framework.model.form.field.SysEnFieldListExtend;
 import com.tgw.basic.framework.model.form.field.SysEnFieldTag;
 import com.tgw.basic.framework.service.BaseService;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -571,7 +571,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	public ModelAndView searchData(HttpServletRequest request, HttpServletResponse response, T bean){
 		LOG.debug("----------------- BaseController  searchData -----------------");
 		ModelAndView modelAndView = new ModelAndView();
-		JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
 		try {
 			beforeSearchData(request,response,bean);
@@ -601,22 +601,22 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			afterSearchData(request,response, bean);
 
 			//组装查询结果
-			jo.put("total",queryResPage.getTotal() );
-			jo.put("items", items );
-			jo.put("isLastPage",pageNum*pageSize>=queryResPage.getTotal()?true:false);
-			jo.put("success",true);
-			jo.put("msg","查询成功！");
+			map.put("total",queryResPage.getTotal() );
+			map.put("items", items );
+			map.put("isLastPage",pageNum*pageSize>=queryResPage.getTotal()?true:false);
+			map.put("success",true);
+			map.put("msg","查询成功！");
 		}catch( PlatformException e ){
-			jo.put("success",false);
-			jo.put("msg", ""+e.getMsg() );
+			map.put("success",false);
+			map.put("msg", ""+e.getMsg() );
 			LOG.error("",e);
 		}catch(Exception e) {
-			jo.put("success",false);
-			jo.put("msg", "发生异常！" );
+			map.put("success",false);
+			map.put("msg", "发生异常！" );
 			LOG.error("",e);
 		}
 
-		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+		modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
 		modelAndView.setViewName( this.getJsonView() );
 		return modelAndView;
 	}
@@ -938,7 +938,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
     @RequestMapping("/save.do")
     public ModelAndView save(HttpServletRequest request, HttpServletResponse response, T bean ){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
         /**
          * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
@@ -948,18 +948,18 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			this.saveCore(request,response,bean );
         	this.afterSave(request,response,bean);
 
-			jo.put("success",true);
-            jo.put("msg","保存成功！");
+			map.put("success",true);
+			map.put("msg","保存成功！");
         }catch( PlatformException e){
-			jo.put("success",false);
-			jo.put("msg",""+e.getMsg() );
+			map.put("success",false);
+			map.put("msg",""+e.getMsg() );
 		}catch (Exception e){
             LOG.error("",e);
-            jo.put("success",false);
-            jo.put("msg","发生异常！");
+			map.put("success",false);
+			map.put("msg","发生异常！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
 
         return  modelAndView;
@@ -1153,7 +1153,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	@RequestMapping("/edit.do")
 	public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, T bean){
 		ModelAndView modelAndView =new ModelAndView();
-		JSONObject jo = JSONObject.fromObject("{}");
+		Map mapResult = PlatformJsonUtils.stringToMap("{}");
 
 		try{
 			this.beforeEdit(request,response,bean);
@@ -1203,7 +1203,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 					/**
 					 * 将对象的各属性值组成json串
 					 */
-					JSONObject objJSON = JSONObject.fromObject("{}");
+					Map map = PlatformJsonUtils.stringToMap("{}");
 					for( SysEnControllerField updateField : updateFieldList ){
 						Method met=null;
 						Object tempObj = null;
@@ -1220,14 +1220,14 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 									met=obj.getClass().getDeclaredMethod( "get"+PlatformStringUtils.firstLetterToUpperCase( sysEnFieldComboBox.getComboBoxName() ) );
 									tempObj = met.invoke(obj);
 
-									objJSON.put( sysEnFieldComboBox.getComboBoxName(),tempObj );
+									map.put( sysEnFieldComboBox.getComboBoxName(),tempObj );
 								}
 
 							}else{//单个下拉框
 								met=obj.getClass().getDeclaredMethod( "get"+PlatformStringUtils.firstLetterToUpperCase(updateField.getName()) );
 								tempObj = met.invoke(obj);
 
-								objJSON.put( updateField.getName(),tempObj );
+								map.put( updateField.getName(),tempObj );
 							}
 
 						}else if( PlatformSysConstant.FORM_XTYPE_FILE.equals( updateField.getXtype() ) ){
@@ -1235,7 +1235,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 							met=obj.getClass().getDeclaredMethod( "get"+PlatformStringUtils.firstLetterToUpperCase(updateField.getName())+"OrigFileName" );
 							tempObj = met.invoke(obj);
 
-							objJSON.put( updateField.getName(),tempObj );
+							map.put( updateField.getName(),tempObj );
 						}else if( updateField.getName().contains( "SavePathHidden" ) ){
 							/**
 							 * 包含SavePathHidden，则说明此字段为存储附件的路径字段。
@@ -1249,7 +1249,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 								//非白板类型的字段
 								met=obj.getClass().getDeclaredMethod( "get"+PlatformStringUtils.firstLetterToUpperCase(updateField.getName()) );
 								tempObj = met.invoke(obj);
-								objJSON.put( updateField.getName(),tempObj );
+								map.put( updateField.getName(),tempObj );
 							}
 						}else{//其他类型字段
 							met=obj.getClass().getDeclaredMethod( "get"+PlatformStringUtils.firstLetterToUpperCase(updateField.getName()) );
@@ -1265,21 +1265,21 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 										SysEnFieldDate sysEnFieldDate = (SysEnFieldDate)updateField.getSysEnFieldAttr();
 										SimpleDateFormat sdf = new SimpleDateFormat( sysEnFieldDate.getFormatJava() );
 										Date tempDate = (Date)tempObj;
-										objJSON.put( updateField.getName(),sdf.format(tempDate) );
+										map.put( updateField.getName(),sdf.format(tempDate) );
 									}
 								}else{
 									//java类中定义的时间属性为String类型
-									objJSON.put( updateField.getName(),tempObj );
+									map.put( updateField.getName(),tempObj );
 								}
 							}else{
-								objJSON.put( updateField.getName(),tempObj );
+								map.put( updateField.getName(),tempObj );
 							}
 
 						}
 
 
 					}
-					jo.put( "bean",objJSON );
+					mapResult.put( "bean",map );
 				}else{
 					throw new PlatformException("没有可更新的字段！");
 				}
@@ -1288,19 +1288,19 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			}
 
 			this.afterEdit(request,response,bean);
-			this.afterEdit(request,response,bean,jo);
+			this.afterEdit(request,response,bean,mapResult);
 
-			jo.put("success",true);
+			mapResult.put("success",true);
 		} catch( PlatformException e ){
-			jo.put("success",false);
-			jo.put("msg",""+e.getMsg());
+			mapResult.put("success",false);
+			mapResult.put("msg",""+e.getMsg());
 		} catch (Exception e){
 			LOG.error("",e);
-			jo.put("success",false);
-			jo.put("msg","发生异常！");
+			mapResult.put("success",false);
+			mapResult.put("msg","发生异常！");
 		}
 
-		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+		modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(mapResult) );
 		modelAndView.setViewName( this.getJsonView() );
 
 		return  modelAndView;
@@ -1322,10 +1322,10 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	 * @param request
 	 * @param response
 	 * @param bean
-	 * @param jo
+	 * @param map
 	 * @throws PlatformException
 	 */
-	public void afterEdit(HttpServletRequest request, HttpServletResponse response, T bean,JSONObject jo) throws PlatformException{
+	public void afterEdit(HttpServletRequest request, HttpServletResponse response, T bean,Map map) throws PlatformException{
 
 	}
 
@@ -1350,7 +1350,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	@RequestMapping("/update.do")
 	public ModelAndView update(HttpServletRequest request, HttpServletResponse response, T bean ){
 		ModelAndView modelAndView = new ModelAndView();
-		JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
 		/**
 		 * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
@@ -1360,18 +1360,18 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			this.updateCore( request,response,bean );
 			this.afterUpdate(request,response,bean);
 
-			jo.put("success",true);
-			jo.put("msg","修改成功！");
+			map.put("success",true);
+			map.put("msg","修改成功！");
 		}catch (PlatformException e){
-			jo.put("success",false);
-			jo.put("msg",""+e.getMsg());
+			map.put("success",false);
+			map.put("msg",""+e.getMsg());
 		}catch (Exception e){
 			LOG.error("",e);
-			jo.put("success",false);
-			jo.put("msg","发生异常！");
+			map.put("success",false);
+			map.put("msg","发生异常！");
 		}
 
-		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+		modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
 		modelAndView.setViewName( this.getJsonView() );
 
 		return  modelAndView;
@@ -1633,7 +1633,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	@RequestMapping("/deleteAtta.do")
 	public ModelAndView deleteAtta(HttpServletRequest request, HttpServletResponse response, T bean ){
 		ModelAndView modelAndView = new ModelAndView();
-		JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
 		/**
 		 * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
@@ -1659,18 +1659,18 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 
 			this.getBaseService().updateBean( oldObj );
 
-			jo.put("success",true);
-			jo.put("msg","删除附件成功！");
+			map.put("success",true);
+			map.put("msg","删除附件成功！");
 		}catch (PlatformException e){
-			jo.put("success",false);
-			jo.put("msg",""+e.getMsg());
+			map.put("success",false);
+			map.put("msg",""+e.getMsg());
 		}catch (Exception e){
 			LOG.error("",e);
-			jo.put("success",false);
-			jo.put("msg","发生异常！");
+			map.put("success",false);
+			map.put("msg","发生异常！");
 		}
 
-		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+		modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
 		modelAndView.setViewName( this.getJsonView() );
 
 		return  modelAndView;
@@ -1697,25 +1697,25 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
     @RequestMapping("/delete.do")
     public ModelAndView delete(HttpServletRequest request, HttpServletResponse response, T bean){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
         try{
         	this.beforeDelete(request,response,bean);
 			this.deleteCore( request,response,bean );
        	 	this.afterDelete(request,response,bean);
 
-            jo.put("success",true);
-            jo.put("msg","删除成功！");
+			map.put("success",true);
+			map.put("msg","删除成功！");
         } catch( PlatformException e ){
-            jo.put("success",false);
-            jo.put("msg",""+e.getMsg());
+			map.put("success",false);
+			map.put("msg",""+e.getMsg());
         } catch (Exception e){
             LOG.error("",e);
-            jo.put("success",false);
-            jo.put("msg","发生异常！");
+			map.put("success",false);
+			map.put("msg","发生异常！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
 
         return  modelAndView;
@@ -1811,7 +1811,7 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 	@RequestMapping("/menuAjaxUpdate.do")
 	public ModelAndView menuAjaxUpdate(HttpServletRequest request, HttpServletResponse response, T bean ){
 		ModelAndView modelAndView = new ModelAndView();
-		JSONObject jo = JSONObject.fromObject("{}");
+		Map map = PlatformJsonUtils.stringToMap("{}");
 
 		/**
 		 * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
@@ -1821,18 +1821,18 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 			this.menuAjaxUpdateCore( request,response,bean );
 			this.afterMenuAjaxUpdate(request,response,bean);
 
-			jo.put("success",true);
-			jo.put("msg","修改成功！");
+			map.put("success",true);
+			map.put("msg","修改成功！");
 		}catch (PlatformException e){
-			jo.put("success",false);
-			jo.put("msg",""+e.getMsg());
+			map.put("success",false);
+			map.put("msg",""+e.getMsg());
 		}catch (Exception e){
 			LOG.error("",e);
-			jo.put("success",false);
-			jo.put("msg","发生异常！");
+			map.put("success",false);
+			map.put("msg","发生异常！");
 		}
 
-		modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+		modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
 		modelAndView.setViewName( this.getJsonView() );
 
 		return  modelAndView;
@@ -1958,9 +1958,9 @@ public class BaseController<T extends AbstractBaseBean> implements Serializable 
 				resList = this.loadComboBoxDataMap(request,response,bean,value);
 			}
 
-			JSONObject jo = JSONObject.fromObject("{}");
-			jo.put("comboboxData", resList );
-			json = jo.toString();
+			Map map = PlatformJsonUtils.stringToMap("{}");
+			map.put("comboboxData", resList );
+			json = PlatformJsonUtils.toJsonString(map);
 		} catch(PlatformException e) {
 			json = "{\"success\":false,\"msg\":\"加载数据失败！"+e.getMsg()+"\",\"comboboxData\":[]}";
 		}catch(Exception e) {

@@ -4,11 +4,11 @@ package com.tgw.basic.framework.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tgw.basic.common.exception.PlatformException;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.core.model.AbstractBaseBean;
 import com.tgw.basic.framework.baseMapper.BaseModelMapper;
 import com.tgw.basic.framework.dao.SysEnFrameMapper;
 import com.tgw.basic.framework.service.BaseService;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -102,9 +102,9 @@ public  class BaseServiceImpl implements BaseService,Serializable {
             List<Map<String,Object>> queryResList = (List<Map<String,Object>>)method.invoke(  this.getBaseModelMapper(),paramValue );
 
             //组装查询结果
-            JSONObject jo = JSONObject.fromObject("{}");
-            jo.put("comboboxData", queryResList );
-            resultStr = jo.toString();
+            Map map = PlatformJsonUtils.stringToMap("{}");
+            map.put("comboboxData", queryResList );
+            resultStr = map.toString();
         }catch (NoSuchMethodException e){
             LOG.error("",e);
             throw new PlatformException("没有找到查询combobox数据的方法。");

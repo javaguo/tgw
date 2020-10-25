@@ -2,13 +2,13 @@ package com.tgw.basic.example.redis.controller;
 
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.example.exampleBean.model.ExampleBean;
 import com.tgw.basic.example.exampleBean.service.ExampleBeanService;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.redis.utils.PlatformRedisStringUtil;
 import com.tgw.basic.redis.utils.PlatformRedisUtil;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -119,7 +120,7 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
     @RequestMapping("/keysSize.do")
     public ModelAndView keysSize(){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         long startTime = System.currentTimeMillis();
         Set keys = platformRedisUtil.keys("*");
@@ -127,10 +128,10 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
         String time = "用时"+ ((endTime-startTime)/1000)+"秒"+((endTime-startTime)%1000)+"毫秒！";
 
         LOG.info("本次查询到"+(keys!=null?keys.size():0)+"个key！"+time);
-        jo.put("success",true);
-        jo.put("msg","共"+(keys!=null?keys.size():0)+"个key！"+time);
+        map.put("success",true);
+        map.put("msg","共"+(keys!=null?keys.size():0)+"个key！"+time);
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.VIEW_JSON );
 
         return  modelAndView;
@@ -139,7 +140,7 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
     @RequestMapping("/redisDeleteAllKeys.do")
     public ModelAndView redisDeleteAllKeys(){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         long startTime = System.currentTimeMillis();
         Set keys = platformRedisUtil.keys("*");
@@ -148,10 +149,10 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
         String time = "用时"+ ((endTime-startTime)/1000)+"秒"+((endTime-startTime)%1000)+"毫秒！";
 
         LOG.info("共删除"+(keys!=null?keys.size():0)+"个key！"+time);
-        jo.put("success",true);
-        jo.put("msg","执行完毕！"+"共删除"+(keys!=null?keys.size():0)+"个key！"+time);
+        map.put("success",true);
+        map.put("msg","执行完毕！"+"共删除"+(keys!=null?keys.size():0)+"个key！"+time);
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.VIEW_JSON );
 
         return  modelAndView;
@@ -160,7 +161,7 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
     @RequestMapping("/stringRedisTemplateSet.do")
     public ModelAndView stringRedisTemplateSet(){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         String prefix = SRT_PREFIX_STRING;
 
@@ -175,10 +176,10 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
 
         String info = "共添加了"+total+"个key！值为String对象！"+time;
         LOG.info(info);
-        jo.put("success",true);
-        jo.put("msg","执行完毕！"+info);
+        map.put("success",true);
+        map.put("msg","执行完毕！"+info);
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.VIEW_JSON );
 
         return  modelAndView;
@@ -187,7 +188,7 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
     @RequestMapping("/redisTemplateSet.do")
     public ModelAndView redisTemplateSet(){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         String prefix = RT_PREFIX_STRING;
 
@@ -222,10 +223,10 @@ public class ExampleRedisController extends BaseController<ExampleBean> {
 
         String info = "共添加了"+total+"个key！值为ExampleBean对象！"+time;
         LOG.info(info);
-        jo.put("success",true);
-        jo.put("msg","执行完毕！"+info);
+        map.put("success",true);
+        map.put("msg","执行完毕！"+info);
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map));
         modelAndView.setViewName( this.VIEW_JSON );
 
         return  modelAndView;

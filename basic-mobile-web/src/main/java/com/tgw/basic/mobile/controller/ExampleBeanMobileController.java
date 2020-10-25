@@ -3,6 +3,7 @@ package com.tgw.basic.mobile.controller;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.example.exampleBean.controller.ExampleBeanController;
 import com.tgw.basic.example.exampleBean.model.ExampleBean;
@@ -12,7 +13,6 @@ import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
 import com.tgw.basic.framework.model.controller.SysEnControllerFunction;
 import com.tgw.basic.framework.model.form.field.SysEnFieldDate;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -598,14 +598,14 @@ public class ExampleBeanMobileController extends BaseController<ExampleBean> {
     @RequestMapping("/ajaxReq.do")
     public ModelAndView ajaxReq(){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         testLog();
 
-        jo.put("success",true);
-        jo.put("msg","菜单按钮ajax异步操作成功！");
+        map.put("success",true);
+        map.put("msg","菜单按钮ajax异步操作成功！");
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
 
         return  modelAndView;
@@ -650,16 +650,16 @@ public class ExampleBeanMobileController extends BaseController<ExampleBean> {
     @RequestMapping("/exampleBeanOpeSingDataAjaxReq.do")
     public ModelAndView exampleBeanOpeSingDataAjaxReq(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         String id = request.getParameter("id");
 
         LOG.info("请求参数：id-->"+id);
 
-        jo.put("success",true);
-        jo.put("msg","单条数据ajax异步操作成功！");
+        map.put("success",true);
+        map.put("msg","单条数据ajax异步操作成功！");
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
 
         return  modelAndView;
@@ -669,7 +669,7 @@ public class ExampleBeanMobileController extends BaseController<ExampleBean> {
     @RequestMapping("/exampleBeanUserDefineOpe.do")
     public ModelAndView exampleBeanUserDefineOpe(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         String id = request.getParameter("id");
         String formText = request.getParameter("formText");
@@ -677,10 +677,10 @@ public class ExampleBeanMobileController extends BaseController<ExampleBean> {
 
         LOG.info("请求参数：id-->"+id+"  formText-->"+formText+"  formNumberInteger-->"+formNumberInteger);
 
-        jo.put("success",true);
-        jo.put("msg","单条数据自定义方法操作成功！");
+        map.put("success",true);
+        map.put("msg","单条数据自定义方法操作成功！");
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
 
         return  modelAndView;

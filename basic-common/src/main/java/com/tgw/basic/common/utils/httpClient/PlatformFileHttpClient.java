@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-public class FileHttpClient {
+public class PlatformFileHttpClient {
     
-    private static Logger log=LoggerFactory.getLogger(FileHttpClient.class);
+    private static Logger log=LoggerFactory.getLogger(PlatformFileHttpClient.class);
     private final static String REQ_TYPE_POST = "POST";
     private final static String REQ_TYPE_GET = "GET";
     private final static String REQ_PROTOCOL_HTTP = "http";
@@ -52,7 +52,7 @@ public class FileHttpClient {
         params.put("patchFile", file);
         params.put("userName", "zhang");
         
-        FileHttpClient.uploadFile(url, params);
+        PlatformFileHttpClient.uploadFile(url, params);
     }
     
     /**
@@ -62,8 +62,8 @@ public class FileHttpClient {
      * @return
      */
     public static String uploadFile(String url,Map<Object, Object> params) {
-        FileHttpClient client = FileHttpClient.createHttpClient(url, ContentType.MULTIPART_FORM_DATA,FileHttpClient.REQ_TYPE_POST);
-        if (url.startsWith(FileHttpClient.REQ_PROTOCOL_HTTPS)){
+        PlatformFileHttpClient client = PlatformFileHttpClient.createHttpClient(url, ContentType.MULTIPART_FORM_DATA, PlatformFileHttpClient.REQ_TYPE_POST);
+        if (url.startsWith(PlatformFileHttpClient.REQ_PROTOCOL_HTTPS)){
         	client.ssLInit();
         }else{
         	client.initHttp();
@@ -79,18 +79,18 @@ public class FileHttpClient {
      * @param RequestType 请求类型post,get
      * @return
      */
-    public static FileHttpClient createHttpClient(String url,ContentType contentType,String RequestType){
-        FileHttpClient client=new FileHttpClient();
+    public static PlatformFileHttpClient createHttpClient(String url, ContentType contentType, String RequestType){
+        PlatformFileHttpClient client=new PlatformFileHttpClient();
         
         if (contentType==null || contentType.equals("")){
             contentType=ContentType.MULTIPART_FORM_DATA;
         }
         contentType=contentType.withCharset(Charset.forName("UTF-8"));
         
-        if (RequestType==null || RequestType.equalsIgnoreCase(FileHttpClient.REQ_TYPE_POST)){
-            RequestType = FileHttpClient.REQ_TYPE_POST;
+        if (RequestType==null || RequestType.equalsIgnoreCase(PlatformFileHttpClient.REQ_TYPE_POST)){
+            RequestType = PlatformFileHttpClient.REQ_TYPE_POST;
         }else{
-            RequestType = FileHttpClient.REQ_TYPE_GET;
+            RequestType = PlatformFileHttpClient.REQ_TYPE_GET;
         }
         
         client.url=url;

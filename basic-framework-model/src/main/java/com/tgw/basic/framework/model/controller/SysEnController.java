@@ -4,6 +4,7 @@ package com.tgw.basic.framework.model.controller;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.core.model.AbstractBaseBean;
 import com.tgw.basic.framework.model.form.field.SysEnFieldBase;
@@ -25,8 +26,6 @@ import com.tgw.basic.framework.model.form.field.SysEnFieldRadioGroup;
 import com.tgw.basic.framework.model.form.field.SysEnFieldTag;
 import com.tgw.basic.framework.model.form.field.SysEnFieldText;
 import com.tgw.basic.framework.model.form.field.SysEnFieldTextArea;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
@@ -84,14 +83,14 @@ public class SysEnController extends AbstractBaseBean {
      */
     private void dealExtConfigsTransform(SysEnFieldText formField, String extConfigsTransform){
         if( StringUtils.isNotBlank( extConfigsTransform ) ){
-            JSONObject jo = JSONObject.fromObject( "{"+extConfigsTransform+"}" );
-            if( jo.containsKey("validatorFunName") ){//方法名称
-                String validator = (String)jo.get("validatorFunName");
+            Map map = PlatformJsonUtils.stringToMap("{"+extConfigsTransform+"}");
+            if( map.containsKey("validatorFunName") ){//方法名称
+                String validator = (String)map.get("validatorFunName");
                 formField.setValidatorFunName( validator );
             }
 
-            if( jo.containsKey("validatorFunField") ){//方法参数
-                String validatorField = (String)jo.get("validatorFunField");
+            if( map.containsKey("validatorFunField") ){//方法参数
+                String validatorField = (String)map.get("validatorFunField");
                 String[] filedArra = validatorField.split(",");
 
                 StringBuffer fieldRes = new StringBuffer();
@@ -594,23 +593,23 @@ public class SysEnController extends AbstractBaseBean {
             configs = "width:250,allowBlank:"+isAllowBlank;
         }
 
-        JSONObject jo = null;
+        Map map = null;
         if( StringUtils.isNotBlank( configs ) ){
-            jo = JSONObject.fromObject( "{"+configs+"}" );
+            map = PlatformJsonUtils.stringToMap("{"+configs+"}");
 
             //处理日期格式
-            if( jo.containsKey( "format" ) ){
-                if( !jo.containsKey( "formatJava" ) ){
+            if( map.containsKey( "format" ) ){
+                if( !map.containsKey( "formatJava" ) ){
                     throw new PlatformException( name+"日期字段配置错误，缺少formatJava配置！");
                 }
 
-                fieldDate.setFormat( jo.get("format").toString() );
-                fieldDate.setFormatJava( jo.get("formatJava").toString() );
+                fieldDate.setFormat( map.get("format").toString() );
+                fieldDate.setFormatJava( map.get("formatJava").toString() );
             }else{
                 configs = "format:'"+PlatformSysConstant.DATE_FORMAT_EXT_YMDHMS+"',"+configs;
                 configs = "formatJava:'"+PlatformSysConstant.DATE_FORMAT_JAVA_YMDHMS+"',"+configs;
-                jo.put("format",PlatformSysConstant.DATE_FORMAT_EXT_YMDHMS);
-                jo.put("formatJava",PlatformSysConstant.DATE_FORMAT_JAVA_YMDHMS);
+                map.put("format",PlatformSysConstant.DATE_FORMAT_EXT_YMDHMS);
+                map.put("formatJava",PlatformSysConstant.DATE_FORMAT_JAVA_YMDHMS);
 
                 fieldDate.setFormat( PlatformSysConstant.DATE_FORMAT_EXT_YMDHMS );
                 fieldDate.setFormatJava( PlatformSysConstant.DATE_FORMAT_JAVA_YMDHMS );
@@ -727,35 +726,34 @@ public class SysEnController extends AbstractBaseBean {
         if( StringUtils.isNotBlank( checkboxGroupConfigs ) ){
             checkboxGroup.setConfigs( checkboxGroupConfigs );
         }
+        List list = PlatformJsonUtils.stringToList(jsonData);
+        for(int i=0;i<list.size();i++){
+                Map map = (Map) list.get(i);
+                if( !map.containsKey("name") ){
+                    throw new PlatformException("缺少name属性。");
+                }
+                if( !map.containsKey("value") ){
+                    throw new PlatformException("缺少value属性。");
+                }
+                if( !map.containsKey("eleId") ){
+                    throw new PlatformException("缺少eleId属性。");
+                }
 
-        JSONArray ja = JSONArray.fromObject(jsonData);
-        for( int i=0 ;i<ja.size();i++ ){
-            JSONObject tempJo = ja.getJSONObject(i);
-            if( !tempJo.containsKey("name") ){
-                throw new PlatformException("缺少name属性。");
-            }
-            if( !tempJo.containsKey("value") ){
-                throw new PlatformException("缺少value属性。");
-            }
-            if( !tempJo.containsKey("eleId") ){
-                throw new PlatformException("缺少eleId属性。");
-            }
+                SysEnFieldCheckbox checkbox = new SysEnFieldCheckbox();
+                checkbox.setBoxLabel( (String) map.get("name") );
+                checkbox.setInputValue( (String) map.get("value") );
+                checkbox.setEleId( (String) map.get("eleId") );
+                if( StringUtils.isNotBlank( checkboxConfigs ) ){
+                    checkbox.setConfigs( checkboxConfigs );
+                }
+                if( map.containsKey("checked") && (Boolean) map.get("checked") ){
+                    checkbox.setChecked( "true" );
+                }else{
+                    checkbox.setChecked( "false" );
+                }
 
-            SysEnFieldCheckbox checkbox = new SysEnFieldCheckbox();
-            checkbox.setBoxLabel( tempJo.getString("name") );
-            checkbox.setInputValue( tempJo.getString("value") );
-            checkbox.setEleId( tempJo.getString("eleId") );
-            if( StringUtils.isNotBlank( checkboxConfigs ) ){
-                checkbox.setConfigs( checkboxConfigs );
+                checkboxGroup.getCheckboxList().add(checkbox);
             }
-            if( tempJo.containsKey("checked") && "true".equals( tempJo.get("checked") ) ){
-                checkbox.setChecked( "true" );
-            }else{
-                checkbox.setChecked( "false" );
-            }
-
-            checkboxGroup.getCheckboxList().add(checkbox);
-        }
 
         sysEnControllerField.setSysEnFieldAttr( checkboxGroup );
         this.getSysEnControllerFieldList().add( sysEnControllerField );
@@ -812,29 +810,29 @@ public class SysEnController extends AbstractBaseBean {
             radioGroup.setConfigs( radioGroupConfigs );
         }
 
-        JSONArray ja = JSONArray.fromObject(jsonData);
-        for( int i=0 ;i<ja.size();i++ ){
-            JSONObject tempJo = ja.getJSONObject(i);
-            if( !tempJo.containsKey("name") ){
+        List list = PlatformJsonUtils.stringToList(jsonData);
+        for(int i=0;i<list.size();i++){
+            Map map = (Map) list.get(i);
+            if( !map.containsKey("name") ){
                 throw new PlatformException("缺少name属性。");
             }
-            if( !tempJo.containsKey("value") ){
+            if( !map.containsKey("value") ){
                 throw new PlatformException("缺少value属性。");
             }
 
-            if( !tempJo.containsKey("eleId") ){
+            if( !map.containsKey("eleId") ){
                 throw new PlatformException("缺少eleId属性。");
             }
 
             SysEnFieldRadio radio = new SysEnFieldRadio();
-            radio.setBoxLabel( tempJo.getString("name") );
-            radio.setInputValue( tempJo.getString("value") );
-            radio.setEleId( tempJo.getString("eleId") );
+            radio.setBoxLabel( (String) map.get("name") );
+            radio.setInputValue( (String) map.get("value") );
+            radio.setEleId( (String) map.get("eleId") );
             if( StringUtils.isNotBlank( radioConfigs ) ){
                 radio.setConfigs( radioConfigs );
             }
-            if( tempJo.containsKey("checked") &&
-                ("true".equals( tempJo.get("checked") )  || true==(Boolean) tempJo.get("checked") )  ){
+            if( map.containsKey("checked") &&
+                ("true".equals( map.get("checked") )  || true==(Boolean) map.get("checked") )  ){
                 radio.setChecked( "true" );
             }else{
                 radio.setChecked( "false" );
@@ -902,19 +900,19 @@ public class SysEnController extends AbstractBaseBean {
             tag.setConfigs( tagConfigs );
         }
 
-        JSONArray ja = JSONArray.fromObject(jsonData);
-        for( int i=0 ;i<ja.size();i++ ){
-            JSONObject tempJo = ja.getJSONObject(i);
-            if( !tempJo.containsKey("name") ){
+        List list = PlatformJsonUtils.stringToList(jsonData);
+        for(int i=0;i<list.size();i++){
+            Map map = (Map) list.get(i);
+            if( !map.containsKey("name") ){
                 throw new PlatformException("缺少name属性。 ");
             }
-            if( !tempJo.containsKey("value") ){
+            if( !map.containsKey("value") ){
                 throw new PlatformException("缺少value属性。");
             }
 
             SysEnFieldComboBoxOption comboBoxOption = new SysEnFieldComboBoxOption();
-            comboBoxOption.setName( tempJo.getString("name") );
-            comboBoxOption.setValue( tempJo.getString("value") );
+            comboBoxOption.setName( (String) map.get("name") );
+            comboBoxOption.setValue( (String) map.get("value") );
 
             tag.getComboBoxOptionList().add( comboBoxOption );
         }
@@ -1156,19 +1154,19 @@ public class SysEnController extends AbstractBaseBean {
             comboBox.setConfigs( comboBoxConfigs );
         }
 
-        JSONArray ja = JSONArray.fromObject(jsonData);
-        for( int i=0 ;i<ja.size();i++ ){
-            JSONObject tempJo = ja.getJSONObject(i);
-            if( !tempJo.containsKey("name") ){
+        List list = PlatformJsonUtils.stringToList(jsonData);
+        for(int i=0;i<list.size();i++){
+            Map map = (Map) list.get(i);
+            if( !map.containsKey("name") ){
                 throw new PlatformException("缺少name属性。");
             }
-            if( !tempJo.containsKey("value") ){
+            if( !map.containsKey("value") ){
                 throw new PlatformException("缺少value属性。");
             }
 
             SysEnFieldComboBoxOption comboBoxOption = new SysEnFieldComboBoxOption();
-            comboBoxOption.setName( tempJo.getString("name") );
-            comboBoxOption.setValue( tempJo.getString("value") );
+            comboBoxOption.setName( (String)map.get("name") );
+            comboBoxOption.setValue( (String)map.get("value") );
 
             comboBox.getComboBoxOptionList().add( comboBoxOption );
         }
@@ -1467,9 +1465,9 @@ public class SysEnController extends AbstractBaseBean {
          * 处理上传附件的服务端配置信息
          */
         if( StringUtils.isNotBlank(serviceConfigs) ){
-            JSONObject jo = JSONObject.fromObject( "{"+ serviceConfigs +"}" );
+            Map map = PlatformJsonUtils.stringToMap("{"+ serviceConfigs +"}");
 
-            Object savePath = jo.get("savePath");
+            Object savePath = map.get("savePath");
             if( savePath!=null && StringUtils.isNotBlank( savePath.toString() ) ){
                 //文件的保存路径存到隐藏域中
                 String fileHiddenConfigs = "value:'"+savePath.toString()+"'";
@@ -1478,7 +1476,7 @@ public class SysEnController extends AbstractBaseBean {
                 throw new PlatformException("上传文件缺少保存路径配置！");
             }
 
-            Object allowFileType = jo.get("allowFileType");
+            Object allowFileType = map.get("allowFileType");
             if( allowFileType!=null && StringUtils.isNotBlank( allowFileType.toString() ) ){
                 formField.setAllowFileType( allowFileType.toString() );
             }else{
@@ -1588,33 +1586,33 @@ public class SysEnController extends AbstractBaseBean {
         }
 
         if( StringUtils.isNotBlank(serviceConfigs) ){
-            JSONObject jo = JSONObject.fromObject( "{"+ serviceConfigs +"}" );
+            Map map = PlatformJsonUtils.stringToMap("{"+ serviceConfigs +"}");
 
-            if( !jo.containsKey("functionName") ){
+            if( !map.containsKey("functionName") ){
                 throw new PlatformException("列表操作字段("+name+")配置错误！缺少脚本函数名配置！");
             }else{
-                fieldAttr.setFunctionName( jo.getString( "functionName" ).trim() );
+                fieldAttr.setFunctionName( ((String)map.get( "functionName" )).trim() );
             }
 
             //url不是必须参数
-            if( jo.containsKey("url") ){
-                fieldAttr.setUrl( jo.getString( "url" ).trim() );
+            if( map.containsKey("url") ){
+                fieldAttr.setUrl( ((String)map.get( "url" )).trim() );
             }
 
-            if( jo.containsKey("param") ){
-                String tempParam = jo.getString("param");
+            if( map.containsKey("param") ){
+                String tempParam = (String)map.get("param");
                 if( StringUtils.isNotBlank( tempParam ) && tempParam.split(",").length>0 ){
-                    fieldAttr.setParam( jo.getString( "param" ) );
+                    fieldAttr.setParam( (String)map.get( "param" ) );
                 }
             }
 
             //tabTitle不是必须参数，打开新tab的操作才需要
-            if( jo.containsKey("tabTitle") ){
-                fieldAttr.setTabTitle( jo.getString( "tabTitle" ).trim() );
+            if( map.containsKey("tabTitle") ){
+                fieldAttr.setTabTitle( ((String)map.get( "tabTitle" )).trim() );
             }
 
-            if( jo.containsKey( "tabFlag" ) ){
-                fieldAttr.setTabFlag( jo.getString("tabFlag").trim() );
+            if( map.containsKey( "tabFlag" ) ){
+                fieldAttr.setTabFlag( ((String)map.get( "tabFlag" )).trim() );
             }
 
         }
@@ -2067,9 +2065,9 @@ public class SysEnController extends AbstractBaseBean {
     /**
      * 将JSONObject的键值赋值给SysEnFormField对应的字段
      * @param sysEnField
-     * @param jo
+     * @param map
      */
-    public void dealFormFieldAttr(SysEnFieldBase sysEnField, JSONObject jo ){
+    public void dealFormFieldAttr(SysEnFieldBase sysEnField, Map map ){
         Class fieldClass = sysEnField.getClass();
 
         SysEnFieldBase formFieldBase = new SysEnFieldBase();
@@ -2086,9 +2084,9 @@ public class SysEnController extends AbstractBaseBean {
             for( Field field : fields ){
                 try{
                     String fieldName = field.getName();
-                    if( jo.containsKey(fieldName) ){
+                    if( map.containsKey(fieldName) ){
                         Method method = fieldClass.getDeclaredMethod( "set"+ PlatformStringUtils.firstLetterToUpperCase( fieldName ),String.class );
-                        method.invoke(sysEnField,jo.get(fieldName).toString() );
+                        method.invoke(sysEnField,map.get(fieldName).toString() );
                     }
                 }catch( Exception e ){
                     e.printStackTrace();

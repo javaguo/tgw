@@ -1,9 +1,9 @@
 package com.tgw.basic.common.utils.tree;
 
 import com.tgw.basic.common.exception.PlatformException;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.common.utils.tree.model.SysEnTreeNode;
-import net.sf.json.JSONArray;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -93,8 +93,7 @@ public class PlatformTreeUtils {
 			return "[]";
 		}
 
-		JSONArray jsonArray = JSONArray.fromObject(rootNodeList);
-		String treeJsonStr = jsonArray.toString();
+		String treeJsonStr = PlatformJsonUtils.toJsonString(rootNodeList);
 
 		if( !hasCheckedBox ){
 			//去掉树节点前面的勾选框

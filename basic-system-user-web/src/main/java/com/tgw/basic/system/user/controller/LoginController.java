@@ -2,6 +2,7 @@ package com.tgw.basic.system.user.controller;
 
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.system.config.service.SysEnConfigurationService;
 import com.tgw.basic.system.role.model.SysEnRole;
@@ -10,8 +11,9 @@ import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
 import com.tgw.basic.system.user.service.SysEnUserService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,12 +22,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController extends BaseController<SysEnUser> {
-	
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
 	@Resource
 	public SysEnUserService sysEnUserService;
     @Resource
@@ -41,7 +46,7 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/login.do")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         String loginName = request.getParameter("loginName");
         loginName = StringUtils.isNotBlank(loginName)?loginName:request.getParameter("userName");// 后续逐步改为loginName。
@@ -75,7 +80,7 @@ public class LoginController extends BaseController<SysEnUser> {
                 String token = UUID.randomUUID().toString().replaceAll("-","");// 目前使用一个简单的字符串，后续可以考虑使用JWT等。
                 sysEnUser.setToken(token);
                 this.getSysEnUserService().updateSysUserBaseInfo(sysEnUser);
-                jo.put("token",token);
+                map.put("token",token);
             }
 
             UserSessionInfo userSessionInfo = new UserSessionInfo();
@@ -85,19 +90,19 @@ public class LoginController extends BaseController<SysEnUser> {
             request.getSession().setAttribute( PlatformSysConstant.USER_SESSION_INFO,userSessionInfo);
 
 
-            jo.put("success",true);
-            jo.put("info","登录成功！");
-            jo.put("theme", StringUtils.isBlank( sysEnUser.getTheme() )?"":sysEnUser.getTheme().trim() );
+            map.put("success",true);
+            map.put("info","登录成功！");
+            map.put("theme", StringUtils.isBlank( sysEnUser.getTheme() )?"":sysEnUser.getTheme().trim() );
         }catch (PlatformException e){
-            jo.put("success",false);
-            jo.put("info",e.getMsg());
+            map.put("success",false);
+            map.put("info",e.getMsg());
         }catch (Exception e){
-            e.printStackTrace();
-            jo.put("success",false);
-            jo.put("info","发生异常！");
+            LOG.error("",e);
+            map.put("success",false);
+            map.put("info","发生异常！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
         return  modelAndView;
     }
@@ -128,24 +133,24 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/loadUserInfo.do")
     public ModelAndView loadUserInfo(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         try {
             UserSessionInfo userSessionInfo = PlatformUserUtils.getUserSessionInfo( );
             SysEnUser sysEnUser = userSessionInfo.getSysEnUser();
 
-            jo.put("userName", sysEnUser.getUserName() );
-            jo.put("loginName", sysEnUser.getLoginName() );
-            jo.put("role", PlatformUserUtils.joinRoleName( userSessionInfo.getSysEnRoleList() ) );
+            map.put("userName", sysEnUser.getUserName() );
+            map.put("loginName", sysEnUser.getLoginName() );
+            map.put("role", PlatformUserUtils.joinRoleName( userSessionInfo.getSysEnRoleList() ) );
 
-            jo.put("success",true);
+            map.put("success",true);
         }catch (Exception e){
-            e.printStackTrace();
-            jo.put("success",false);
-            jo.put("info","获取用户登录信息失败！");
+            LOG.error("",e);
+            map.put("success",false);
+            map.put("info","获取用户登录信息失败！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
         return  modelAndView;
     }
@@ -153,7 +158,7 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/modifyUserPassword.do")
     public ModelAndView modifyUserPassword(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         try {
             String oldPassword = request.getParameter( "oldPassword" );
@@ -173,18 +178,18 @@ public class LoginController extends BaseController<SysEnUser> {
             sysEnUser.setPassword( newPassword );
             this.getSysEnUserService().updateBean( sysEnUser );
 
-            jo.put("success",true);
-            jo.put("msg","密码修改成功！" );
+            map.put("success",true);
+            map.put("msg","密码修改成功！" );
         }catch (PlatformException e){
-            jo.put("success",false);
-            jo.put("msg",e.getMsg() );
+            map.put("success",false);
+            map.put("msg",e.getMsg() );
         }catch (Exception e){
-            e.printStackTrace();
-            jo.put("success",false);
-            jo.put("msg","发生异常！" );
+            LOG.error("",e);
+            map.put("success",false);
+            map.put("msg","发生异常！" );
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
         return  modelAndView;
     }
@@ -192,20 +197,20 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/loginOut.do")
     public ModelAndView loginOut(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         try {
             request.getSession().removeAttribute( PlatformSysConstant.USER_SESSION_INFO );
             String contextPath = request.getContextPath();
-            jo.put("url",contextPath + "/login/toLogin.do" );
-            jo.put("success",true);
+            map.put("url",contextPath + "/login/toLogin.do" );
+            map.put("success",true);
         }catch (Exception e){
             e.printStackTrace();
-            jo.put("success",false);
-            jo.put("info","发生异常！");
+            map.put("success",false);
+            map.put("info","发生异常！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
         return  modelAndView;
     }
@@ -213,31 +218,31 @@ public class LoginController extends BaseController<SysEnUser> {
     @RequestMapping("/loadPageInfo.do")
     public ModelAndView loadPageInfo(HttpServletRequest request, HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         try {
             String manageIndexTopTitle = this.getSysEnConfigurationService().querySysEnConfigValByKey( "manageIndexTopTitle" );
             if( StringUtils.isNotBlank( manageIndexTopTitle ) ){
-                jo.put("manageIndexTopTitle",manageIndexTopTitle);
+                map.put("manageIndexTopTitle",manageIndexTopTitle);
             }else{
-                jo.put("manageIndexTopTitle","欢迎使用");
+                map.put("manageIndexTopTitle","欢迎使用");
             }
 
             String manageIndexBottomCopyright = this.getSysEnConfigurationService().querySysEnConfigValByKey( "manageIndexBottomCopyright" );
             if( StringUtils.isNotBlank( manageIndexBottomCopyright ) ){
-                jo.put("manageIndexBottomCopyright",manageIndexBottomCopyright);
+                map.put("manageIndexBottomCopyright",manageIndexBottomCopyright);
             }else{
-                jo.put("manageIndexBottomCopyright","Copyright 2018 ZhaoJianGuo. AllRightsReserved.");
+                map.put("manageIndexBottomCopyright","Copyright 2018 ZhaoJianGuo. AllRightsReserved.");
             }
 
-            jo.put("success",true);
+            map.put("success",true);
         }catch (Exception e){
-            e.printStackTrace();
-            jo.put("success",false);
-            jo.put("info","发生异常！");
+            LOG.error("",e);
+            map.put("success",false);
+            map.put("info","发生异常！");
         }
 
-        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
         modelAndView.setViewName( this.getJsonView() );
         return  modelAndView;
     }

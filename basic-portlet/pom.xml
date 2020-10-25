@@ -16,7 +16,7 @@
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--<dependency>
       <groupId>portlet-api</groupId>
       <artifactId>portlet-api</artifactId>
       <version>1.0</version>
@@ -31,18 +31,20 @@
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
       <version>1.0.4</version>
-    </dependency>
+    </dependency>-->
   </dependencies>
 
   <modules>
-    <!--<module>../basic-root</module>-->
-    <!--<module>../basic-parent</module>-->
+    <!-- 编译顺序 basic-root、basic-parent、basic-portlet。除root、parent之外的组件都添加到portlet中，通过portlet统一编译。 -->
+    <!-- parent.relativePath 无法解决目前项目中pom文件继承关系的问题，所以需要先编译basic-root、basic-parent组件。 -->
+    <!--<module>../basic-root</module>
+    <module>../basic-parent</module>-->
     <module>../basic-core-model</module>
     <module>../basic-common</module>
+    <module>../basic-system-runtime-envir</module>
     <module>../basic-framework-model</module>
     <module>../basic-framework-service</module>
     <module>../basic-framework-web</module>
-    <module>../basic-system-runtime-envir</module>
 
     <module>../basic-rabbitmq-service</module>
     <module>../basic-thread-service</module>

@@ -5,6 +5,7 @@ import com.tgw.basic.common.utils.PlatformInfo;
 import com.tgw.basic.common.utils.PlatformUtils;
 import com.tgw.basic.common.utils.collections.PlatformCollectionsUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
+import com.tgw.basic.common.utils.json.PlatformJsonUtils;
 import com.tgw.basic.common.utils.string.PlatformStringUtils;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
@@ -14,8 +15,6 @@ import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
 import com.tgw.basic.system.user.service.SysEnUserService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -145,7 +144,7 @@ public class SysUserController extends BaseController<SysEnUser> {
     @RequestMapping("/register.do")
     public ModelAndView register(HttpServletRequest request, HttpServletResponse response, SysEnUser bean ){
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject jo = JSONObject.fromObject("{}");
+        Map map = PlatformJsonUtils.stringToMap("{}");
 
         /**
          * extjs的form表单提交后根据返回值中的success值判断走success回调函数或failure函数
@@ -171,17 +170,17 @@ public class SysUserController extends BaseController<SysEnUser> {
             bean.setUserStatus("1");// 默认代表正常
             // 至此，初始化用户信息成功
         }catch( PlatformException e){
-            jo.put("success",false);
-            jo.put("msg",""+e.getMsg() );
+            map.put("success",false);
+            map.put("msg",""+e.getMsg() );
 
-            modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+            modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
             return  modelAndView;
         }catch (Exception e){
             e.printStackTrace();
-            jo.put("success",false);
-            jo.put("msg","发生异常！");
+            map.put("success",false);
+            map.put("msg","发生异常！");
 
-            modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+            modelAndView.addObject( PlatformSysConstant.JSONSTR, PlatformJsonUtils.toJsonString(map) );
             return  modelAndView;
         }
 
@@ -351,20 +350,18 @@ public class SysUserController extends BaseController<SysEnUser> {
             rootNodeList = arrayListMap.get("0");
         }
 
-        JSONArray jsonArray = JSONArray.fromObject(rootNodeList);
-
         /**
          * 也可以直接向response输出内容
          */
         /*try {
-			response.getWriter().print( jsonArray.toString() );
+			response.getWriter().print( PlatformJsonUtils.toJsonString(rootNodeList) );
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
 
         modelAndView.setViewName( super.getJsonView() );
         //取第一个，不显示查询出的根结点，根结点由前端js代码设置
-        modelAndView.addObject("jsonStr", jsonArray.get(0).toString() );
+        modelAndView.addObject("jsonStr", PlatformJsonUtils.toJsonString(rootNodeList.get(0))  );
         return modelAndView;
     }
 

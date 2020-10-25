@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @Component
-public class SpringContextUtils implements ApplicationContextAware {
+public class PlatformSpringContextUtils implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
  
     public void setApplicationContext(ApplicationContext arg0)

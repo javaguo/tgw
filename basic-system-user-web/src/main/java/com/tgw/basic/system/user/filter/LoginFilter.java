@@ -1,7 +1,7 @@
 package com.tgw.basic.system.user.filter;
 
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
-import com.tgw.basic.common.utils.spring.SpringContextUtils;
+import com.tgw.basic.common.utils.spring.PlatformSpringContextUtils;
 import com.tgw.basic.system.user.model.SysEnUser;
 import com.tgw.basic.system.user.model.UserSessionInfo;
 import com.tgw.basic.system.user.service.SysEnUserService;
@@ -51,7 +51,7 @@ public class LoginFilter implements Filter {
 			if (StringUtils.isBlank(token) || StringUtils.isBlank(loginName)){
 				loginFilter = false;
 			}else {
-				SysEnUserService sysEnUserService = (SysEnUserService)SpringContextUtils.getBeanById("sysEnUserService");
+				SysEnUserService sysEnUserService = (SysEnUserService) PlatformSpringContextUtils.getBeanById("sysEnUserService");
 				SysEnUser user = sysEnUserService.queryUserByLoginName(loginName);
 				if (user==null || StringUtils.isBlank(user.getToken()) || !user.getToken().equals(token)){
 					loginFilter = false;
