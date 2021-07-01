@@ -1,5 +1,5 @@
 server:
-    port: 8081
+    port: 8090
     servlet:
       jsp:
         init-parameters:
@@ -7,6 +7,27 @@ server:
       context-path: /
 
 spring:
+  devtools:
+      restart:
+        enabled: false
+        log-condition-evaluation-delta: true
+        # 指定路径下的资源不触发restart，exclude有默认值。添加自定义路径可使用additional-exclude
+        # exclude:
+        additional-exclude:
+        # 指定路径下的资源触发restart
+        additional-paths:
+        poll-interval: 1s
+        quiet-period: 400ms
+      add-properties: true
+      livereload:
+        # restart开启后，livereload才能生效。
+        enabled: true
+        port: 35729
+      #remote:
+        #secret:
+  main:
+    log-startup-info: true
+    banner-mode: console
   datasource:
       url: jdbc:mysql://localhost:3306/tgw?useUnicode=true&characterEncoding=utf-8&useSSL=false
       username: root
@@ -27,11 +48,13 @@ spring:
   profiles:
     # test,dev,prod
     active: prod
+#  cache:
+#    type:redis
   redis:
     database: 0
     host: localhost
     port: 6379
-    password:
+    password: 123456789
     timeout: 5000
     lettuce:
       pool:
@@ -39,6 +62,43 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+  quartz:
+      #持久化到数据库
+      job-store-type: jdbc
+      # 程序结束时会等待quartz相关的内容结束
+      wait-for-jobs-to-complete-on-shutdown: true
+      # QuartzScheduler启动时更新己存在的Job,这样就不用每次修改targetObject后删除qrtz_job_details表对应记录
+      overwrite-existing-jobs: true
+      properties:
+        org:
+          quartz:
+            scheduler:
+              instancName: tgwQuartzScheduler
+              instanceId: AUTO
+              # batchTriggerAcquisitionMaxCount:50
+            threadPool:
+              class: org.quartz.simpl.SimpleThreadPool
+              threadCount: 10
+              threadPriority: 5
+              threadsInheritContextClassLoaderOfInitializingThread: true
+            jobStore:
+              class: org.quartz.impl.jdbcjobstore.JobStoreTX
+              driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+              tablePrefix: sys_qrtz_
+              isClustered: false
+              useProperties: false
+            datasource:
+              # 新版驱动从com.mysql.jdbc.Driver变更为com.mysql.cj.jdbc.Driver
+              driver-class-name: com.mysql.jdbc.Driver
+              # 数据源需要添加时间标准和指定编码格式解决乱码 You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+              url: jdbc:mysql://localhost:3306/tgw?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+              username: root
+              password: 123456
+
+
+  banner:
+    location: classpath:config/banner.txt
+
 
 mybatis:
   #typeAliasesPackage: com.example.mybaitsxml.dao.entity

@@ -49,6 +49,7 @@
     <module>../basic-rabbitmq-service</module>
     <module>../basic-thread-service</module>
     <module>../basic-redis-service</module>
+    <module>../basic-tool-scheduler</module>
 
     <module>../basic-system-constant-service</module>
     <module>../basic-system-constant-web</module>

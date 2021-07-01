@@ -31,5 +31,10 @@
             <artifactId>basic-thread-service</artifactId>
             <version>${basic-version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>tool-scheduler</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
     </dependencies>
 </project>

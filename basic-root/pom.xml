@@ -25,6 +25,7 @@
     <spring-version>5.2.4.RELEASE</spring-version>
     <fasterxml.jackson-version>2.10.2</fasterxml.jackson-version>
     <dubbo.version>2.7.6</dubbo.version>
+    <xxl.version>2.3.0</xxl.version>
     <servlet-api-version>2.5</servlet-api-version>
     <jsp-api-version>2.1</jsp-api-version>
   </properties>
@@ -62,6 +63,20 @@
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
 
+    <!--quartz定时调度依赖-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-quartz</artifactId>
+    </dependency>
+
+    <!-- xxl-job-core -->
+    <dependency>
+      <groupId>com.xuxueli</groupId>
+      <artifactId>xxl-job-core</artifactId>
+      <version>${xxl.version}</version>
+    </dependency>
+
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -83,11 +98,11 @@
       <artifactId>dubbo-registry-redis</artifactId>
     </dependency>-->
 
-    <!--<dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
-    </dependency>-->
+    </dependency>
     <!--<dependency>
       <groupId>com.fasterxml</groupId>
       <artifactId>classmate</artifactId>
@@ -529,6 +544,7 @@
         <includes>
           <include>**/*.yml</include>
           <include>**/*.properties</include>
+          <include>**/*.txt</include>
           <include>**/*.xml</include>
           <include>**/*.css</include>
           <include>**/*.js</include>
