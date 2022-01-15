@@ -9,9 +9,9 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <name>tool-scheduler</name>
+    <name>basic-tool-scheduler</name>
 
-    <artifactId>tool-scheduler</artifactId>
+    <artifactId>basic-tool-scheduler</artifactId>
     <version>${basic-version}</version>
     <packaging>jar</packaging>
 </project>

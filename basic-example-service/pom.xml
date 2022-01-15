@@ -33,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>tool-scheduler</artifactId>
+            <artifactId>basic-tool-scheduler</artifactId>
             <version>${basic-version}</version>
         </dependency>
     </dependencies>
