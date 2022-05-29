@@ -30,6 +30,12 @@
 		</style>
 	</head>
 	<body>
+		<div class="top_ele">
+			<div style="width: 500px;height:80px;float:right;margin-right: 30px;margin-top: 5px;">
+				<iframe width="500px" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23&icon=1&num=5&site=14"></iframe>
+				<%--<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=2" width="770" height="70" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>--%>
+			</div>
+		</div>
 		<div id="bgcc">
 			<div id="content">
 				<form name="form1" id="form1" method="post" action="<%=basePath%>/sys/user/login">
@@ -59,13 +65,8 @@
 --%>
 		</div>
 
-		<div style="width: 420px;height:80px;float:right;">
-			<iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23&icon=1&num=5&site=14"></iframe>
-			<%--<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=2" width="770" height="70" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>--%>
-		</div>
-
-		<div>
-			<a href="https://beian.miit.gov.cn/" target="_blank">备案号</a>
+		<div class="bottom_ele">
+			<a href="https://beian.miit.gov.cn/" target="_blank"> </a>
 		</div>
 	</body>
 </html>

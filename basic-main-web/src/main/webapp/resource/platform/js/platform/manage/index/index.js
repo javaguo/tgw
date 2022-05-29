@@ -103,7 +103,9 @@ function loadPageInfo(){
 		success:function(data){
 			if(data.success==true){
 				$("#head-region-container").html( data.manageIndexTopTitle );
-				$("#foot-region-container").html( data.manageIndexBottomCopyright );
+				var bottomInfo = data.manageIndexBottomCopyright;
+				bottomInfo = bottomInfo + '&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://beian.miit.gov.cn/" target="_blank"> </a>'
+				$("#foot-region-container").html( bottomInfo );
 			}else{
 
 			}

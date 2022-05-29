@@ -26,3 +26,18 @@ border-top-color:#aaaaaa;
 height: 25px;
 text-align: center;
 }
+
+a:link{
+    color:black;
+    text-decoration:none;
+}
+
+a:hover{
+    color:purple;
+    text-decoration:none;
+}
+
+a:visited{
+    color:black;
+    text-decoration:none;
+}
