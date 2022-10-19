@@ -23,7 +23,7 @@
 
     <!-- 第三方版本属性 -->
     <spring-version>5.2.4.RELEASE</spring-version>
-    <fasterxml.jackson-version>2.10.2</fasterxml.jackson-version>
+    <fasterxml.jackson-version>2.13.4.1</fasterxml.jackson-version>
     <dubbo.version>2.7.6</dubbo.version>
     <xxl.version>2.3.0</xxl.version>
     <servlet-api-version>2.5</servlet-api-version>
