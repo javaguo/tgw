@@ -25,7 +25,7 @@
     <spring-version>5.2.4.RELEASE</spring-version>
     <fasterxml.jackson-version>2.10.2</fasterxml.jackson-version>
     <dubbo.version>2.7.6</dubbo.version>
-    <xxl.version>2.3.0</xxl.version>
+    <xxl.version>2.3.1</xxl.version>
     <servlet-api-version>2.5</servlet-api-version>
     <jsp-api-version>2.1</jsp-api-version>
   </properties>
